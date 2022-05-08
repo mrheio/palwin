@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "856855486155",
+    "project_id": "noctur",
+    "storage_bucket": "noctur.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:856855486155:android:da53e02763e7b5fe7c054e",
+        "android_client_info": {
+          "package_name": "com.drg.noctur"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "856855486155-nnpj7pbq9o3ej29odllpfrm6u7is7vpq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAN3_M-afPgm_PHEV9AKk6kghuHo2mfD-4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "856855486155-nnpj7pbq9o3ej29odllpfrm6u7is7vpq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
