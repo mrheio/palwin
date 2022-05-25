@@ -9,7 +9,7 @@ import '../common/providers.dart';
 
 final gameDatabaseServiceProvider = Provider((ref) {
   final firestore = ref.read(firestoreProvider);
-  return FirestoreService<Game>(firestore, 'users');
+  return FirestoreService<Game>(firestore, 'games');
 });
 
 final gameRepositoryProvider = Provider((ref) {
@@ -17,7 +17,7 @@ final gameRepositoryProvider = Provider((ref) {
   return GameRepository(databaseService);
 });
 
-final userServiceProvider = Provider((ref) {
+final gameServiceProvider = Provider((ref) {
   final gameRepository = ref.read(gameRepositoryProvider);
   final teamRepository = ref.read(teamRepositoryProvider);
   return GameService(gameRepository, teamRepository);

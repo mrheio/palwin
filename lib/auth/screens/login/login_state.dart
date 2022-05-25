@@ -6,18 +6,21 @@ import 'package:noctur/auth/google_auth_service.dart';
 import 'package:optional/optional.dart';
 
 import '../../../common/errors/err.dart';
+import '../../../common/success.dart';
 
 class LoginState {
   final TextEditingController emailField;
   final TextEditingController passwordField;
   final bool loading;
   final Err? error;
+  final Success? success;
 
   LoginState({
     TextEditingController? emailField,
     TextEditingController? passwordField,
     this.loading = false,
     this.error,
+    this.success,
   })  : emailField = emailField ?? TextEditingController(),
         passwordField = passwordField ?? TextEditingController();
 
@@ -26,12 +29,17 @@ class LoginState {
     passwordField.dispose();
   }
 
-  LoginState copyWith({bool? loading, Optional<Err>? error}) {
+  LoginState copyWith({
+    bool? loading,
+    Optional<Err>? error,
+    Optional<Success>? success,
+  }) {
     return LoginState(
       emailField: emailField,
       passwordField: passwordField,
       loading: loading ?? this.loading,
       error: error != null ? error.orElseNull : this.error,
+      success: success != null ? success.orElseNull : this.success,
     );
   }
 }
@@ -44,13 +52,17 @@ class LoginStateNotifier extends StateNotifier<LoginState> {
       : super(LoginState());
 
   Future<void> logIn() async {
-    state = state.copyWith(loading: true, error: const Optional.empty());
+    state = state.copyWith(
+        loading: true,
+        error: const Optional.empty(),
+        success: const Optional.empty());
     try {
       final email = state.emailField.text.trim();
       final password = state.passwordField.text.trim();
       await _authService.logInWithEmailAndPassword(
           email: email, password: password);
-      state = state.copyWith(loading: false);
+      state =
+          state.copyWith(loading: false, success: Optional.of(const Success()));
     } on Err catch (error) {
       state = state.copyWith(loading: false, error: Optional.of(error));
     }

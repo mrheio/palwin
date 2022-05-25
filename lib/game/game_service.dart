@@ -3,7 +3,7 @@ import 'package:noctur/game/game.dart';
 import 'package:noctur/game/game_repository.dart';
 import 'package:noctur/team/team_repository.dart';
 
-class GameService extends BaseService<Game> {
+class GameService extends BaseService<Game, GameRepository> {
   final TeamRepository _teamRepository;
 
   const GameService(GameRepository gameRepository, this._teamRepository)

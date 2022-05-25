@@ -1,8 +1,8 @@
 import 'package:noctur/common/database/base_repository.dart';
-import 'package:noctur/common/database/where.dart';
+import 'package:noctur/common/database/query_filters.dart';
 
-abstract class BaseService<T> {
-  final BaseRepository<T> repository;
+abstract class BaseService<T, G extends BaseRepository<T>> {
+  final G repository;
 
   const BaseService(this.repository);
 
@@ -38,11 +38,11 @@ abstract class BaseService<T> {
     return repository.getById$(id);
   }
 
-  Future<List<T>> getWhere(List<Where> where) {
-    return repository.getWhere(where);
+  Future<List<T>> getWhere(List<QueryFilter> filters) {
+    return repository.getWhere(filters);
   }
 
-  Stream<List<T>> getWhere$(List<Where> where) {
-    return repository.getWhere$(where);
+  Stream<List<T>> getWhere$(List<QueryFilter> filters) {
+    return repository.getWhere$(filters);
   }
 }

@@ -4,6 +4,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:noctur/auth/screens/login/login_form.dart';
 import 'package:noctur/auth/screens/login/login_state.dart';
 import 'package:noctur/common/utils/ui_utils.dart';
+import 'package:noctur/common/widgets/app_button.dart';
+import 'package:noctur/common/widgets/app_column.dart';
+import 'package:noctur/common/widgets/header.dart';
 import 'package:noctur/common/widgets/loading.dart';
 
 class Login extends ConsumerWidget {
@@ -16,25 +19,33 @@ class Login extends ConsumerWidget {
 
     ref.listen<LoginState>(loginStateNotifierProvider, (prev, next) {
       final error = next.error;
+      final success = next.success;
       if (error != null) {
         UiUtils.showSnackbar(context, error.message);
       }
+      if (success != null) {}
     });
 
     return Scaffold(
       body: Loading(
         condition: loginState.loading,
-        child: Container(
-          margin: const EdgeInsets.all(16),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              LoginForm(),
-              ElevatedButton(
-                onPressed: loginNotifier.logInWithGoogle,
-                child: const Text('Intra in cont cu Google'),
+        child: Center(
+          child: Container(
+            padding: const EdgeInsets.all(16),
+            child: SingleChildScrollView(
+              child: AppColumn(
+                spacing: 24,
+                children: [
+                  const Header('Autentificare'),
+                  LoginForm(),
+                  AppButton(
+                    onPressed: loginNotifier.logInWithGoogle,
+                    child: const Text('Intra in cont cu Google'),
+                    fillWidth: true,
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
         ),
       ),

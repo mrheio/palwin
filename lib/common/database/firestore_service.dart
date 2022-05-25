@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:noctur/common/database/database_service.dart';
+import 'package:noctur/common/database/query_filters.dart';
 import 'package:noctur/common/database/query_utils.dart';
 import 'package:noctur/common/database/serializable.dart';
-import 'package:noctur/common/database/where.dart';
 
 class FirestoreService<T extends Serializable> implements DatabaseService<T> {
   final CollectionReference _collectionRef;
@@ -12,6 +12,10 @@ class FirestoreService<T extends Serializable> implements DatabaseService<T> {
 
   @override
   Future<void> add(T data) async {
+    if (data.id.isEmpty) {
+      await _collectionRef.add(data.toMap());
+      return;
+    }
     await _collectionRef.doc(data.id).set(data.toMap());
   }
 
@@ -80,8 +84,8 @@ class FirestoreService<T extends Serializable> implements DatabaseService<T> {
   }
 
   @override
-  Future<List<T>> getWhere(List<Where> where) async {
-    final query = QueryUtils.createQuery(_collectionRef, where);
+  Future<List<T>> getWhere(List<QueryFilter> filters) async {
+    final query = QueryUtils.createQuery(_collectionRef, filters);
     final qs = await query.get();
     if (qs.docs.isEmpty) {
       return <T>[];
@@ -91,8 +95,8 @@ class FirestoreService<T extends Serializable> implements DatabaseService<T> {
   }
 
   @override
-  Stream<List<T>> getWhere$(List<Where> where) {
-    final query = QueryUtils.createQuery(_collectionRef, where);
+  Stream<List<T>> getWhere$(List<QueryFilter> filters) {
+    final query = QueryUtils.createQuery(_collectionRef, filters);
     final qs$ = query.snapshots();
     final result$ = qs$.map((event) {
       final docs = event.docs;

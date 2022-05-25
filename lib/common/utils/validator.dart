@@ -3,9 +3,14 @@ import 'package:noctur/common/errors/invalid_data_format.dart';
 class Validator {
   const Validator._();
 
-  static void required(String? value) {
-    if (value == null || value.isEmpty) {
+  static void required(dynamic value) {
+    if (value == null) {
       throw const EmptyField();
+    }
+    if (value is String) {
+      if (value.isEmpty) {
+        throw const EmptyField();
+      }
     }
   }
 

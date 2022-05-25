@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
+import 'package:noctur/common/widgets/app_button.dart';
+import 'package:noctur/common/widgets/app_column.dart';
+import 'package:noctur/common/widgets/header.dart';
+import 'package:noctur/common/widgets/logo.dart';
+import 'package:vrouter/vrouter.dart';
 
 class WelcomeScreen extends ConsumerWidget {
   const WelcomeScreen({Key? key}) : super(key: key);
@@ -10,19 +14,23 @@ class WelcomeScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       body: Container(
-        width: double.infinity,
-        child: Column(
+        padding: const EdgeInsets.all(16),
+        child: AppColumn(
+          spacing: 16,
           mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            ElevatedButton(
-              onPressed: () => GoRouter.of(context).push('/register'),
+            const Logo(),
+            const Header('Bine ai venit'),
+            AppButton(
+              onPressed: () => VRouter.of(context).to('/register'),
               child: const Text('Creeaza cont'),
+              fillWidth: true,
             ),
-            ElevatedButton(
-              onPressed: () => GoRouter.of(context).push('/login'),
+            AppButton(
+              onPressed: () => VRouter.of(context).to('/login'),
               child: const Text('Intra in cont'),
-            ),
+              fillWidth: true,
+            )
           ],
         ),
       ),

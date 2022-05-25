@@ -1,8 +1,11 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:noctur/auth/auth_providers.dart';
 import 'package:noctur/common/database/firestore_service.dart';
+import 'package:noctur/game/game_providers.dart';
 import 'package:noctur/team/team.dart';
 import 'package:noctur/team/team_repository.dart';
 import 'package:noctur/team/team_service.dart';
+import 'package:noctur/user/user_providers.dart';
 
 import '../common/providers.dart';
 
@@ -16,7 +19,11 @@ final teamRepositoryProvider = Provider((ref) {
   return TeamRepository(databaseService);
 });
 
-final userServiceProvider = Provider((ref) {
+final teamServiceProvider = Provider((ref) {
   final teamRepository = ref.read(teamRepositoryProvider);
-  return TeamService(teamRepository);
+  final gameRepository = ref.read(gameRepositoryProvider);
+  final userRepository = ref.read(userRepositoryProvider);
+  final authService = ref.read(authServiceProvider);
+  return TeamService(
+      teamRepository, gameRepository, userRepository, authService);
 });

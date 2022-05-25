@@ -4,6 +4,8 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:noctur/auth/screens/register/register_state.dart';
 import 'package:noctur/common/utils/validator.dart';
+import 'package:noctur/common/widgets/app_button.dart';
+import 'package:noctur/common/widgets/app_column.dart';
 import 'package:noctur/common/widgets/app_text_field.dart';
 
 class RegisterForm extends ConsumerWidget {
@@ -20,8 +22,8 @@ class RegisterForm extends ConsumerWidget {
 
     return Form(
       key: _formKey,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+      child: AppColumn(
+        spacing: 16,
         children: [
           AppTextField(
             controller: registerState.emailField,
@@ -39,13 +41,14 @@ class RegisterForm extends ConsumerWidget {
             validators: const [Validator.required],
             obscureText: true,
           ),
-          ElevatedButton(
+          AppButton(
             onPressed: () {
               if (_formKey.currentState!.validate()) {
                 registerNotifier.register();
               }
             },
             child: const Text('Creeaza cont'),
+            fillWidth: true,
           ),
         ],
       ),

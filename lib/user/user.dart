@@ -1,11 +1,11 @@
 import 'package:noctur/common/database/serializable.dart';
 
 class User extends Serializable {
-  String email;
-  String username;
-  Map<String, bool> roles;
+  final String email;
+  final String username;
+  final Map<String, bool> roles;
 
-  User({
+  const User({
     required String id,
     required this.email,
     required this.username,

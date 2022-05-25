@@ -1,11 +1,18 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
+import 'package:noctur/game/game.dart';
+import 'package:noctur/team/team.dart';
 import 'package:noctur/user/user.dart';
+
+import '../../message/message.dart';
 
 typedef Deserializer = Serializable Function(Map<String, dynamic>);
 
 final Map<Type, Deserializer> deserializers = {
-  User: (Map<String, dynamic> data) => User.fromMap(data)
+  User: (Map<String, dynamic> data) => User.fromMap(data),
+  Team: (Map<String, dynamic> data) => Team.fromMap(data),
+  Game: (Map<String, dynamic> data) => Game.fromMap(data),
+  Message: (Map<String, dynamic> data) => Message.fromMap(data),
 };
 
 abstract class Serializable extends Equatable {

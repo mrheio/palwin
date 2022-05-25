@@ -3,6 +3,8 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:noctur/auth/screens/login/login_state.dart';
 import 'package:noctur/common/utils/validator.dart';
+import 'package:noctur/common/widgets/app_button.dart';
+import 'package:noctur/common/widgets/app_column.dart';
 import 'package:noctur/common/widgets/app_text_field.dart';
 
 class LoginForm extends ConsumerWidget {
@@ -19,8 +21,8 @@ class LoginForm extends ConsumerWidget {
 
     return Form(
       key: _formKey,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+      child: AppColumn(
+        spacing: 16,
         children: [
           AppTextField(
             controller: loginState.emailField,
@@ -33,13 +35,14 @@ class LoginForm extends ConsumerWidget {
             validators: const [Validator.required],
             obscureText: true,
           ),
-          ElevatedButton(
+          AppButton(
             onPressed: () {
               if (_formKey.currentState!.validate()) {
                 loginNotifier.logIn();
               }
             },
             child: const Text('Intra in cont'),
+            fillWidth: true,
           ),
         ],
       ),

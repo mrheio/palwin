@@ -9,12 +9,20 @@ class Game extends Serializable {
       : super(id ?? replaceSpacesWithUnderscores(name));
 
   factory Game.fromMap(Map<String, dynamic> map) {
-    return Game(id: map['id'], name: map['name'], capacity: map['capacity']);
+    return Game(
+      id: map['id'],
+      name: map['name'],
+      capacity: map['capacity'],
+    );
   }
 
   @override
   Map<String, dynamic> toMap() {
-    return {'id': id, 'name': name, 'capacity': capacity};
+    return {
+      'id': id,
+      'name': name,
+      'capacity': capacity,
+    };
   }
 
   static String toId(String name) => replaceSpacesWithUnderscores(name);
