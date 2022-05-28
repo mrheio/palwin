@@ -1,7 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart' as FB;
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:noctur/user/user.dart';
-import 'package:noctur/user/user_repository.dart';
+
+import '../user/user.dart';
+import '../user/user_repository.dart';
 
 class GoogleAuthService {
   final FB.FirebaseAuth _auth;

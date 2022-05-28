@@ -1,9 +1,10 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:noctur/common/database/firestore_service.dart';
-import 'package:noctur/common/providers.dart';
-import 'package:noctur/user/user.dart';
-import 'package:noctur/user/user_repository.dart';
-import 'package:noctur/user/user_service.dart';
+
+import '../common/database/firestore_service.dart';
+import '../common/providers.dart';
+import 'user.dart';
+import 'user_repository.dart';
+import 'user_service.dart';
 
 final userDatabaseServiceProvider = Provider((ref) {
   final firestore = ref.read(firestoreProvider);

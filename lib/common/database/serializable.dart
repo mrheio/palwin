@@ -1,10 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
-import 'package:noctur/game/game.dart';
-import 'package:noctur/team/team.dart';
-import 'package:noctur/user/user.dart';
 
+import '../../game/game.dart';
 import '../../message/message.dart';
+import '../../team/team.dart';
+import '../../user/user.dart';
 
 typedef Deserializer = Serializable Function(Map<String, dynamic>);
 

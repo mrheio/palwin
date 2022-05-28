@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:noctur/common/widgets/app_button.dart';
-import 'package:noctur/common/widgets/app_column.dart';
-import 'package:noctur/game/screens/add_game/add_game_state.dart';
 
+import '../../../common/app_widgets.dart';
 import '../../../common/utils/validator.dart';
-import '../../../common/widgets/app_text_field.dart';
+import 'add_game_form_state.dart';
+import 'add_game_state.dart';
 
 class AddGameForm extends ConsumerWidget {
   final GlobalKey<FormState> _formKey;
@@ -17,8 +15,8 @@ class AddGameForm extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final addGameState = ref.watch(addGameStateNotifierProvider);
-    final addGameNotifier = ref.read(addGameStateNotifierProvider.notifier);
+    final state = ref.watch(addGameFormStateProvider);
+    final notifier = ref.read(addGameStateProvider.notifier);
 
     return Form(
       key: _formKey,
@@ -26,19 +24,19 @@ class AddGameForm extends ConsumerWidget {
         spacing: 16,
         children: [
           AppTextField(
-            controller: addGameState.nameField,
+            controller: state.nameController,
             hint: 'Nume joc',
             validators: const [Validator.required],
           ),
           AppTextField(
-            controller: addGameState.capacityField,
+            controller: state.teamSizeController,
             hint: 'Numar maxim jucatori in echipa',
             validators: const [Validator.required, Validator.numeric],
           ),
           AppButton(
             onPressed: () {
               if (_formKey.currentState!.validate()) {
-                addGameNotifier.addGame();
+                notifier.addGame();
               }
             },
             child: const Text('Adauga joc'),

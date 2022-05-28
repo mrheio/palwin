@@ -1,8 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:noctur/common/database/database_service.dart';
-import 'package:noctur/common/database/query_filters.dart';
-import 'package:noctur/common/database/query_utils.dart';
-import 'package:noctur/common/database/serializable.dart';
+
+import 'database_service.dart';
+import 'query_filters.dart';
+import 'query_utils.dart';
+import 'serializable.dart';
 
 class FirestoreService<T extends Serializable> implements DatabaseService<T> {
   final CollectionReference _collectionRef;

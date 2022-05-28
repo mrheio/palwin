@@ -1,8 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart' as FB;
-import 'package:noctur/common/errors/auth_error.dart';
-import 'package:noctur/user/user.dart';
-import 'package:noctur/user/user_repository.dart';
 import 'package:rxdart/rxdart.dart';
+
+import '../common/errors/auth_error.dart';
+import '../user/user.dart';
+import '../user/user_repository.dart';
 
 class AuthService {
   final FB.FirebaseAuth _auth;

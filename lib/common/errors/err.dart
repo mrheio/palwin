@@ -3,6 +3,9 @@ abstract class Err implements Exception {
   final String message;
   final int statusCode;
 
-  const Err(
-      {required this.name, required this.message, required this.statusCode});
+  const Err({
+    required this.name,
+    required this.message,
+    required this.statusCode,
+  });
 }

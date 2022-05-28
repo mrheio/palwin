@@ -1,4 +1,4 @@
-import 'package:noctur/common/database/serializable.dart';
+import '../common/database/serializable.dart';
 
 class User extends Serializable {
   final String email;

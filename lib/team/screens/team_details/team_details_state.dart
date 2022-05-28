@@ -1,20 +1,26 @@
 import 'dart:async';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:noctur/team/team.dart';
-import 'package:noctur/team/team_providers.dart';
-import 'package:noctur/team/team_service.dart';
+import 'package:optional/optional.dart';
+
+import '../../../common/success.dart';
+import '../../team.dart';
+import '../../team_providers.dart';
+import '../../team_service.dart';
 
 class TeamDetailsState {
   final Team? team;
   final bool loading;
+  final Success? success;
 
-  TeamDetailsState({this.team, this.loading = false});
+  TeamDetailsState({this.team, this.loading = false, this.success});
 
-  TeamDetailsState copyWith({Team? team, bool? loading}) {
+  TeamDetailsState copyWith(
+      {Team? team, bool? loading, Optional<Success>? success}) {
     return TeamDetailsState(
       team: team ?? this.team,
       loading: loading ?? this.loading,
+      success: success != null ? success.orElseNull : this.success,
     );
   }
 }
@@ -44,6 +50,9 @@ class TeamDetailsStateNotifier extends StateNotifier<TeamDetailsState> {
 
   Future<void> deleteTeam() async {
     await _teamService.deleteById(state.team!.id);
+    state = state.copyWith(
+        success: Optional.of(Success(message: '${state.team!.name} stearsa')));
+    state = state.copyWith(success: const Optional.empty());
   }
 
   @override

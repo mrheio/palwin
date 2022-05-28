@@ -1,11 +1,11 @@
-import 'package:noctur/common/database/base_service.dart';
-import 'package:noctur/common/database/query_filters.dart';
-import 'package:noctur/message/message_repository.dart';
-import 'package:noctur/user/user_repository.dart';
 import 'package:optional/optional.dart';
 import 'package:rxdart/rxdart.dart';
 
+import '../common/database/base_service.dart';
+import '../common/database/query_filters.dart';
+import '../user/user_repository.dart';
 import 'message.dart';
+import 'message_repository.dart';
 
 class MessageService extends BaseService<Message, MessageRepository> {
   final UserRepository _userRepository;

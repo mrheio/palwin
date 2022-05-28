@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:noctur/common/database/query_filters.dart';
+
+import 'query_filters.dart';
 
 class QueryUtils {
   const QueryUtils._();
@@ -23,6 +24,12 @@ class QueryUtils {
         }
         if (condition.whereIn) {
           query = query.where(condition.key, whereIn: condition.value);
+        }
+        if (condition.isGreaterThan) {
+          query = query.where(condition.key, isGreaterThan: condition.value);
+        }
+        if (condition.isLessThan) {
+          query = query.where(condition.key, isLessThan: condition.value);
         }
       }
       if (condition is OrderBy) {

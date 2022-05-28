@@ -1,8 +1,7 @@
-import 'package:noctur/common/database/base_repository.dart';
-import 'package:noctur/common/database/database_service.dart';
-import 'package:noctur/user/user.dart';
-
+import '../common/database/base_repository.dart';
+import '../common/database/database_service.dart';
 import '../common/database/query_filters.dart';
+import 'user.dart';
 
 class UserRepository extends BaseRepository<User> {
   const UserRepository(DatabaseService<User> databaseService)

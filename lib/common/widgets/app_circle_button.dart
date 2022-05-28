@@ -21,6 +21,7 @@ class AppCircleButton extends StatelessWidget {
         shape: const CircleBorder(),
         padding: const EdgeInsets.all(14),
         primary: AppColor.primary[50],
+        onPrimary: AppColor.text,
       ),
     );
   }

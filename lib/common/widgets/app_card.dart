@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:noctur/common/styles.dart';
+
+import '../styles.dart';
 
 class AppCard extends StatelessWidget {
   final Widget? child;
@@ -22,6 +23,7 @@ class AppCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(18),
         child: InkWell(
           onTap: onTap,
+          borderRadius: BorderRadius.circular(18),
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Padding(

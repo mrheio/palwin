@@ -1,5 +1,7 @@
-import 'package:noctur/common/errors/err.dart';
-import 'package:noctur/common/utils/status_codes.dart';
+import '../../game/game.dart';
+import '../../team/team.dart';
+import '../utils/status_codes.dart';
+import 'err.dart';
 
 abstract class ResourceAlreadyExists extends Err {
   const ResourceAlreadyExists({
@@ -16,13 +18,15 @@ class UserAlreadyExists extends ResourceAlreadyExists {
 }
 
 class TeamAlreadyExists extends ResourceAlreadyExists {
-  const TeamAlreadyExists(String game)
+  TeamAlreadyExists(Team team)
       : super(
             name: 'team-already-exists',
-            message: 'Ai deja o echipa pentru jocul $game');
+            message: 'Ai deja o echipa pentru jocul ${team.game}');
 }
 
 class GameAlreadyExists extends ResourceAlreadyExists {
-  const GameAlreadyExists(String game)
-      : super(name: 'game-already-exists', message: 'Jocul $game exista deja');
+  GameAlreadyExists(Game game)
+      : super(
+            name: 'game-already-exists',
+            message: 'Jocul ${game.name} exista deja');
 }

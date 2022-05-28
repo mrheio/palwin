@@ -2,14 +2,14 @@ import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:noctur/auth/auth_providers.dart';
-import 'package:noctur/common/widgets/loading.dart';
-import 'package:noctur/home/screens/welcome_screen.dart';
 
+import '../../auth/auth_providers.dart';
+import '../../common/widgets/loading.dart';
 import '../../game/screens/add_game/add_game.dart';
 import '../../game/screens/games_view/games_view.dart';
 import '../../team/screens/teams_view/teams_view.dart';
 import '../../user/screens/profile_view.dart';
+import 'welcome_screen.dart';
 
 class Home extends ConsumerWidget {
   final _beamerKey = GlobalKey<BeamerState>();
@@ -29,7 +29,7 @@ class Home extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final authState = ref.watch(authStateNotifierProvider);
+    final authState = ref.watch(authStateProvider);
 
     if (authState.loading) {
       return const Loading(condition: true);

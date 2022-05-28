@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:noctur/common/styles.dart';
+
+import '../styles.dart';
 
 class LoadingIndicator extends StatelessWidget {
   const LoadingIndicator({Key? key}) : super(key: key);
@@ -19,8 +20,11 @@ class Loading extends StatelessWidget {
   final bool condition;
   final Widget? child;
 
-  const Loading({required this.condition, this.child, Key? key})
-      : super(key: key);
+  const Loading({
+    this.condition = true,
+    this.child,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

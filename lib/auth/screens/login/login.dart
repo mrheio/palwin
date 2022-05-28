@@ -1,34 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:noctur/auth/screens/login/login_form.dart';
-import 'package:noctur/auth/screens/login/login_state.dart';
-import 'package:noctur/common/utils/ui_utils.dart';
-import 'package:noctur/common/widgets/app_button.dart';
-import 'package:noctur/common/widgets/app_column.dart';
-import 'package:noctur/common/widgets/header.dart';
-import 'package:noctur/common/widgets/loading.dart';
+
+import '../../../common/utils/ui_utils.dart';
+import '../../../common/widgets/app_button.dart';
+import '../../../common/widgets/app_column.dart';
+import '../../../common/widgets/header.dart';
+import '../../../common/widgets/loading.dart';
+import 'login_form.dart';
+import 'login_state.dart';
 
 class Login extends ConsumerWidget {
   const Login({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final loginState = ref.watch(loginStateNotifierProvider);
-    final loginNotifier = ref.read(loginStateNotifierProvider.notifier);
+    final state = ref.watch(loginStateProvider);
+    final notifier = ref.read(loginStateProvider.notifier);
 
-    ref.listen<LoginState>(loginStateNotifierProvider, (prev, next) {
-      final error = next.error;
-      final success = next.success;
-      if (error != null) {
-        UiUtils.showSnackbar(context, error.message);
+    ref.listen<LoginState>(loginStateProvider, (prev, next) {
+      if (next is LoginError) {
+        UiUtils.maybeShowSnackbar(context, next.error.message);
       }
-      if (success != null) {}
     });
 
     return Scaffold(
       body: Loading(
-        condition: loginState.loading,
+        condition: state is LoginLoading,
         child: Center(
           child: Container(
             padding: const EdgeInsets.all(16),
@@ -39,7 +37,7 @@ class Login extends ConsumerWidget {
                   const Header('Autentificare'),
                   LoginForm(),
                   AppButton(
-                    onPressed: loginNotifier.logInWithGoogle,
+                    onPressed: notifier.logInWithGoogle,
                     child: const Text('Intra in cont cu Google'),
                     fillWidth: true,
                   ),

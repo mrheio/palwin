@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vrouter/vrouter.dart';
 
+import 'common/widgets/app_circle_button.dart';
+
 class FloatingContent extends ConsumerWidget {
   const FloatingContent({Key? key}) : super(key: key);
 
@@ -10,7 +12,7 @@ class FloatingContent extends ConsumerWidget {
     final url = VRouter.of(context).url;
 
     if (url == '/tabs/teams') {
-      return FloatingActionButton(
+      return AppCircleButton(
         onPressed: () => VRouter.of(context).to('/tabs/teams/add'),
         child: Icon(
           Icons.add_a_photo,
@@ -19,7 +21,7 @@ class FloatingContent extends ConsumerWidget {
     }
 
     if (url == '/tabs/games') {
-      return FloatingActionButton(
+      return AppCircleButton(
         onPressed: () => VRouter.of(context).to('/tabs/games/add'),
         child: Icon(
           Icons.add_comment,

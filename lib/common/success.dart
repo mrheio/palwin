@@ -4,4 +4,6 @@ class Success {
   const Success({this.message = ''});
 
   bool get hasMessage => message.isNotEmpty;
+
+  static const empty = Success();
 }

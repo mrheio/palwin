@@ -4,24 +4,24 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'app.dart';
 
-// class Logger extends ProviderObserver {
-//   @override
-//   void didUpdateProvider(
-//     ProviderBase provider,
-//     Object? previousValue,
-//     Object? newValue,
-//     ProviderContainer container,
-//   ) {
-//     print('''
-// {
-//   "provider": "${provider.name ?? provider.runtimeType}",
-//   "newValue": "$newValue"
-// }''');
-//   }
-// }
+class Logger extends ProviderObserver {
+  @override
+  void didUpdateProvider(
+    ProviderBase provider,
+    Object? previousValue,
+    Object? newValue,
+    ProviderContainer container,
+  ) {
+    print('''
+{
+  "provider": "${provider.name ?? provider.runtimeType}",
+  "newValue": "$newValue"
+}''');
+  }
+}
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(const ProviderScope(child: App()));
+  runApp(ProviderScope(observers: [Logger()], child: const App()));
 }

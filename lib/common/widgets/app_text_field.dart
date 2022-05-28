@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:noctur/common/errors/err.dart';
-import 'package:noctur/common/styles.dart';
+
+import '../errors/err.dart';
+import '../styles.dart';
 
 class AppTextField extends StatelessWidget {
   final TextEditingController? controller;

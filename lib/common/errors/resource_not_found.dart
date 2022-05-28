@@ -1,5 +1,5 @@
-import 'package:noctur/common/errors/err.dart';
-import 'package:noctur/common/utils/status_codes.dart';
+import '../utils/status_codes.dart';
+import 'err.dart';
 
 class ResourceNotFound extends Err {
   const ResourceNotFound({

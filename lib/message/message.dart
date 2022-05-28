@@ -1,6 +1,7 @@
-import 'package:noctur/common/database/serializable.dart';
-import 'package:noctur/user/user.dart';
 import 'package:optional/optional.dart';
+
+import '../common/database/serializable.dart';
+import '../user/user.dart';
 
 class Message extends Serializable {
   final String message;

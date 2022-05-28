@@ -1,5 +1,5 @@
-import 'package:noctur/common/database/database_service.dart';
-import 'package:noctur/common/database/query_filters.dart';
+import 'database_service.dart';
+import 'query_filters.dart';
 
 abstract class BaseRepository<T> {
   final DatabaseService<T> databaseService;

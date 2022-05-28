@@ -6,6 +6,7 @@ class AppText extends StatelessWidget {
   final Color? color;
   final EdgeInsetsGeometry margin;
   final double? fontSize;
+  final TextOverflow? overflow;
 
   const AppText(
     this.data, {
@@ -13,6 +14,7 @@ class AppText extends StatelessWidget {
     this.color,
     this.margin = EdgeInsets.zero,
     this.fontSize,
+    this.overflow,
     Key? key,
   }) : super(key: key);
 
@@ -29,6 +31,7 @@ class AppText extends StatelessWidget {
       padding: margin,
       child: Text(
         data,
+        overflow: overflow,
         style: TextStyle(
           fontWeight: _pickFontWeight(),
           color: color,

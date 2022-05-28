@@ -1,36 +1,39 @@
-import 'package:noctur/common/database/serializable.dart';
-import 'package:noctur/game/game.dart';
-import 'package:noctur/user/user.dart';
+import '../common/database/serializable.dart';
+import '../game/game.dart';
+import '../user/user.dart';
 
 class Team extends Serializable {
   final String name;
-  final String game;
+  final String gameId;
   final String description;
   final String uid;
-  final int capacity;
+  final int slots;
+  final int freeSlots;
+  final int filledSlots;
   final List<String> playersIds;
   final List<User> users;
 
-  Team({
-    String? id,
+  const Team({
     required this.name,
-    required this.game,
+    required this.gameId,
     required this.description,
     required this.uid,
-    required this.capacity,
-    List<String>? playersIds,
+    required this.slots,
+    required this.freeSlots,
+    required this.filledSlots,
+    required this.playersIds,
     this.users = const [],
-  })  : playersIds = playersIds ?? [uid],
-        super(id ?? '${Game.toId(game)}--$uid');
+  }) : super('$gameId--$uid');
 
   factory Team.fromMap(Map<String, dynamic> map) {
     return Team(
-      id: map['id'],
       name: map['name'],
-      game: map['game'],
+      gameId: map['gameId'],
       description: map['description'],
       uid: map['uid'],
-      capacity: map['capacity'] as int,
+      slots: map['slots'] as int,
+      freeSlots: map['freeSlots'] as int,
+      filledSlots: map['filledSlots'] as int,
       playersIds: List<String>.from(map['playersIds']),
       users: const [],
     );
@@ -38,16 +41,18 @@ class Team extends Serializable {
 
   factory Team.fromForm({
     required String name,
-    required String capacity,
-    required String description,
     required Game game,
+    required String description,
+    required String slots,
   }) {
     return Team(
       name: name,
-      game: game.name,
+      gameId: game.id,
       description: description,
       uid: '',
-      capacity: int.parse(capacity),
+      slots: int.parse(slots),
+      freeSlots: int.parse(slots) - 1,
+      filledSlots: 1,
       playersIds: const [],
       users: const [],
     );
@@ -58,39 +63,44 @@ class Team extends Serializable {
     return {
       'id': id,
       'name': name,
-      'game': game,
+      'gameId': gameId,
       'description': description,
       'uid': uid,
-      'capacity': capacity,
+      'slots': slots,
+      'freeSlots': freeSlots,
+      'filledSlots': filledSlots,
       'playersIds': playersIds
     };
   }
 
   Team copyWith({
-    String? id,
     String? name,
-    String? game,
+    String? gameId,
     String? description,
-    int? capacity,
     String? uid,
+    int? slots,
+    int? freeSlots,
+    int? filledSlots,
     List<String>? playersIds,
     List<User>? users,
   }) {
     return Team(
-      id: id ?? this.id,
       name: name ?? this.name,
-      game: game ?? this.game,
+      gameId: gameId ?? this.gameId,
       description: description ?? this.description,
       uid: uid ?? this.uid,
-      capacity: capacity ?? this.capacity,
+      slots: slots ?? this.slots,
+      freeSlots: freeSlots ?? this.freeSlots,
+      filledSlots: filledSlots ?? this.filledSlots,
       playersIds: playersIds ?? this.playersIds,
       users: users ?? this.users,
     );
   }
 
+  String get game => Game.toName(gameId);
+
   @override
-  List<Object?> get props =>
-      [id, name, game, description, uid, capacity, playersIds];
+  List<Object?> get props => [id, name, gameId];
 
   bool hasUser(User user) {
     return playersIds.contains(user.id);
@@ -101,6 +111,22 @@ class Team extends Serializable {
   }
 
   bool isFull() {
-    return playersIds.length == capacity;
+    return slots == filledSlots;
+  }
+
+  Team addUser(User user) {
+    return copyWith(
+      playersIds: [...playersIds, user.id],
+      filledSlots: filledSlots + 1,
+      freeSlots: freeSlots - 1,
+    );
+  }
+
+  Team removeUser(User user) {
+    return copyWith(
+      playersIds: playersIds..removeWhere((element) => element == user.id),
+      filledSlots: filledSlots - 1,
+      freeSlots: freeSlots + 1,
+    );
   }
 }

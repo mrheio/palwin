@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:noctur/auth/screens/login/login_state.dart';
-import 'package:noctur/common/utils/validator.dart';
-import 'package:noctur/common/widgets/app_button.dart';
-import 'package:noctur/common/widgets/app_column.dart';
-import 'package:noctur/common/widgets/app_text_field.dart';
+
+import '../../../common/utils/validator.dart';
+import '../../../common/widgets/app_button.dart';
+import '../../../common/widgets/app_column.dart';
+import '../../../common/widgets/app_text_field.dart';
+import 'login_form_state.dart';
+import 'login_state.dart';
 
 class LoginForm extends ConsumerWidget {
   final GlobalKey<FormState> _formKey;
@@ -16,8 +18,8 @@ class LoginForm extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final loginState = ref.watch(loginStateNotifierProvider);
-    final loginNotifier = ref.watch(loginStateNotifierProvider.notifier);
+    final state = ref.watch(loginFormStateProvider);
+    final notifier = ref.read(loginStateProvider.notifier);
 
     return Form(
       key: _formKey,
@@ -25,12 +27,12 @@ class LoginForm extends ConsumerWidget {
         spacing: 16,
         children: [
           AppTextField(
-            controller: loginState.emailField,
+            controller: state.emailController,
             hint: 'Email',
             validators: const [Validator.required, Validator.email],
           ),
           AppTextField(
-            controller: loginState.passwordField,
+            controller: state.passwordController,
             hint: 'Parola',
             validators: const [Validator.required],
             obscureText: true,
@@ -38,7 +40,7 @@ class LoginForm extends ConsumerWidget {
           AppButton(
             onPressed: () {
               if (_formKey.currentState!.validate()) {
-                loginNotifier.logIn();
+                notifier.logIn();
               }
             },
             child: const Text('Intra in cont'),

@@ -1,7 +1,6 @@
-import 'package:noctur/common/errors/err.dart';
-import 'package:noctur/common/utils/status_codes.dart';
-
 import '../../game/game.dart';
+import '../utils/status_codes.dart';
+import 'err.dart';
 
 class TooManyRequests extends Err {
   const TooManyRequests()
@@ -11,12 +10,12 @@ class TooManyRequests extends Err {
             statusCode: StatusCode.badRequest);
 }
 
-class CapacityOverflow extends Err {
-  CapacityOverflow(Game game)
+class TeamSizeOverflow extends Err {
+  TeamSizeOverflow(Game game)
       : super(
           name: 'game-capacity-overflow',
           message:
-              'Jocul ${game.name} are echipe de maxim ${game.capacity} jucatori',
+              'Jocul ${game.name} are echipe de maxim ${game.teamSize} jucatori',
           statusCode: StatusCode.badRequest,
         );
 }

@@ -1,83 +1,62 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:noctur/common/errors/err.dart';
-import 'package:noctur/common/success.dart';
-import 'package:noctur/game/game.dart';
-import 'package:noctur/game/game_providers.dart';
-import 'package:noctur/game/game_service.dart';
-import 'package:optional/optional.dart';
 
-class AddGameState {
-  final TextEditingController nameField;
-  final TextEditingController capacityField;
-  final bool loading;
-  final Err? error;
-  final Success? success;
+import '../../../common/errors/err.dart';
+import '../../../common/success.dart';
+import '../../game.dart';
+import '../../game_providers.dart';
+import '../../game_service.dart';
+import 'add_game_form_state.dart';
 
-  AddGameState({
-    TextEditingController? nameField,
-    TextEditingController? capacityField,
-    this.loading = false,
-    this.error,
-    this.success,
-  })  : nameField = nameField ?? TextEditingController(),
-        capacityField = capacityField ?? TextEditingController();
+abstract class AddGameState {
+  const AddGameState();
+}
 
-  void dispose() {
-    nameField.dispose();
-    capacityField.dispose();
-  }
+class AddGameInit extends AddGameState {
+  const AddGameInit();
+}
 
-  AddGameState copyWith({
-    bool? loading,
-    Optional<Err>? error,
-    Optional<Success>? success,
-  }) {
-    return AddGameState(
-        nameField: nameField,
-        capacityField: capacityField,
-        loading: loading ?? this.loading,
-        error: error != null ? error.orElseNull : this.error,
-        success: success != null ? success.orElseNull : this.success);
-  }
+class AddGameLoading extends AddGameState {
+  const AddGameLoading();
+}
+
+class AddGameSuccess extends AddGameState {
+  final Success success;
+
+  AddGameSuccess(String message) : success = Success(message: message);
+}
+
+class AddGameError extends AddGameState {
+  final Err error;
+
+  const AddGameError(this.error);
 }
 
 class AddGameStateNotifier extends StateNotifier<AddGameState> {
   final GameService _gameService;
+  final AddGameFormState _formState;
 
-  AddGameStateNotifier(this._gameService) : super(AddGameState());
+  AddGameStateNotifier(this._gameService, this._formState)
+      : super(const AddGameInit());
 
   Future<void> addGame() async {
-    state = state.copyWith(
-        loading: true,
-        error: const Optional.empty(),
-        success: const Optional.empty());
+    state = const AddGameLoading();
+    final game = Game.fromForm(
+      name: _formState.name,
+      teamSize: _formState.teamSize,
+    );
     try {
-      final name = state.nameField.text.trim();
-      final capacity = state.capacityField.text.trim();
-      final game = Game(name: name, capacity: int.parse(capacity));
       await _gameService.add(game);
-      state = state.copyWith(
-          loading: false,
-          success: Optional.of(Success(message: '$name adaugat')));
+      state = AddGameSuccess('${game.name} adaugat');
     } on Err catch (error) {
-      state = state.copyWith(
-          loading: false,
-          error: Optional.of(error),
-          success: const Optional.empty());
+      state = AddGameError(error);
     }
-  }
-
-  @override
-  void dispose() {
-    state.dispose();
-    super.dispose();
   }
 }
 
-final addGameStateNotifierProvider =
+final addGameStateProvider =
     StateNotifierProvider.autoDispose<AddGameStateNotifier, AddGameState>(
         (ref) {
   final gameService = ref.read(gameServiceProvider);
-  return AddGameStateNotifier(gameService);
+  final formState = ref.watch(addGameFormStateProvider);
+  return AddGameStateNotifier(gameService, formState);
 });

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:noctur/common/widgets/utils.dart';
+
+import 'utils.dart';
 
 class AppRow extends StatelessWidget {
   final List<Widget> children;

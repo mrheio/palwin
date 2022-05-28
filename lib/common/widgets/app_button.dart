@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:noctur/common/styles.dart';
+
+import '../styles.dart';
 
 class AppButton extends StatelessWidget {
   final void Function()? onPressed;
@@ -28,6 +29,7 @@ class AppButton extends StatelessWidget {
         child: child,
         style: ElevatedButton.styleFrom(
           primary: AppColor.primary[50],
+          onPrimary: AppColor.text,
           minimumSize: _pickMinimumSize(),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
         ),

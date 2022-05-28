@@ -3,6 +3,36 @@ import 'package:flutter/material.dart';
 import '../errors/err.dart';
 import '../styles.dart';
 
+enum FieldStyle { base, naked }
+
+InputDecoration buttonDecoration(String? hint) {
+  return InputDecoration(
+    hintText: hint,
+    border: const OutlineInputBorder(
+      borderSide: BorderSide.none,
+    ),
+    enabledBorder: const OutlineInputBorder(
+      borderSide: BorderSide.none,
+    ),
+    focusedBorder: OutlineInputBorder(
+      borderSide: BorderSide(
+        color: AppColor.primary[40]!,
+      ),
+    ),
+    errorBorder: const OutlineInputBorder(
+      borderSide: BorderSide(
+        color: AppColor.error,
+      ),
+    ),
+    filled: true,
+    fillColor: AppColor.primary[70],
+  );
+}
+
+InputDecoration simpleDecoration(String? hint) {
+  return InputDecoration(hintText: hint);
+}
+
 class AppSelectField<T> extends StatelessWidget {
   final List<T> items;
   final T? value;
@@ -11,6 +41,7 @@ class AppSelectField<T> extends StatelessWidget {
   final String? hint;
   final Widget Function(T e) displayMapper;
   final T Function(T e)? valueMapper;
+  final FieldStyle style;
 
   const AppSelectField({
     this.items = const [],
@@ -20,6 +51,7 @@ class AppSelectField<T> extends StatelessWidget {
     this.hint,
     required this.displayMapper,
     this.valueMapper,
+    this.style = FieldStyle.base,
     Key? key,
   }) : super(key: key);
 
@@ -36,9 +68,17 @@ class AppSelectField<T> extends StatelessWidget {
     return null;
   }
 
+  InputDecoration _pickStyle() {
+    if (style == FieldStyle.naked) {
+      return simpleDecoration(hint);
+    }
+    return buttonDecoration(hint);
+  }
+
   @override
   Widget build(BuildContext context) {
     return DropdownButtonFormField<T>(
+      isExpanded: true,
       value: value,
       items: items
           .map((e) => DropdownMenuItem<T>(
@@ -48,27 +88,7 @@ class AppSelectField<T> extends StatelessWidget {
           .toList(),
       onChanged: onChanged,
       validator: _validator,
-      decoration: InputDecoration(
-        hintText: hint,
-        border: const OutlineInputBorder(
-          borderSide: BorderSide.none,
-        ),
-        enabledBorder: const OutlineInputBorder(
-          borderSide: BorderSide.none,
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderSide: BorderSide(
-            color: AppColor.primary[40]!,
-          ),
-        ),
-        errorBorder: const OutlineInputBorder(
-          borderSide: BorderSide(
-            color: AppColor.error,
-          ),
-        ),
-        filled: true,
-        fillColor: AppColor.primary[70],
-      ),
+      decoration: _pickStyle(),
     );
   }
 }

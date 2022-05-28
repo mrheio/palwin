@@ -1,14 +1,13 @@
-import 'package:noctur/auth/auth_service.dart';
-import 'package:noctur/common/database/base_service.dart';
-import 'package:noctur/common/errors/other_error.dart';
-import 'package:noctur/game/game_repository.dart';
-import 'package:noctur/team/team.dart';
-import 'package:noctur/team/team_repository.dart';
-import 'package:noctur/user/user_repository.dart';
 import 'package:rxdart/rxdart.dart';
 
-import '../common/database/query_filters.dart';
+import '../auth/auth_service.dart';
+import '../common/database/base_service.dart';
+import '../common/errors/other_error.dart';
+import '../game/game_repository.dart';
 import '../user/user.dart';
+import '../user/user_repository.dart';
+import 'team.dart';
+import 'team_repository.dart';
 
 class TeamService extends BaseService<Team, TeamRepository> {
   final GameRepository _gameRepository;
@@ -22,40 +21,36 @@ class TeamService extends BaseService<Team, TeamRepository> {
   @override
   Future<void> add(Team data) async {
     final game = (await _gameRepository.getByName(data.game))!;
-    if (data.capacity > game.capacity) {
-      throw CapacityOverflow(game);
+    if (data.slots > game.teamSize) {
+      throw TeamSizeOverflow(game);
     }
+
     final user = (await _authService.getLoggedUser())!;
     final team = data.copyWith(uid: user.id, playersIds: [user.id]);
+
     return super.add(team);
   }
 
-  Future<void> addUserToTeam(User user, Team team) async {
-    await repository.update(
-        team.id, team.copyWith(playersIds: [...team.playersIds, user.id]));
+  Future<void> _addUserToTeam(User user, Team team) async {
+    await repository.update(team.id, team.addUser(user));
   }
 
   Future<void> addLoggedUserToTeam(Team team) async {
     final user = (await _authService.getLoggedUser())!;
-    await addUserToTeam(user, team);
+    await _addUserToTeam(user, team);
   }
 
-  Future<void> removeUserFromTeam(User user, Team team) async {
-    await repository.update(
-        team.id,
-        team.copyWith(
-            playersIds: team.playersIds
-              ..removeWhere((element) => element == user.id)));
+  Future<void> _removeUserFromTeam(User user, Team team) async {
+    await repository.update(team.id, team.removeUser(user));
   }
 
   Future<void> removeLoggedUserFromTeam(Team team) async {
     final user = (await _authService.getLoggedUser())!;
-    await removeUserFromTeam(user, team);
+    await _removeUserFromTeam(user, team);
   }
 
   Future<void> deleteByGame(String game) async {
-    repository.deleteWhere(
-        [Where(key: 'game', condition: WhereCondition.equalsTo, value: game)]);
+    repository.deleteByGame(game);
   }
 
   Stream<Team?> getTeamWithUsers$(String teamId) {

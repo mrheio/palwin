@@ -1,9 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:noctur/auth/auth_service.dart';
-import 'package:noctur/user/user.dart';
 import 'package:optional/optional.dart';
+
+import '../user/user.dart';
+import 'auth_service.dart';
 
 class AuthState {
   final User? user;
@@ -27,16 +28,19 @@ class AuthState {
   }
 }
 
-class AuthStateNotifier extends StateNotifier<AuthState> {
+class AuthNotifier extends StateNotifier<AuthState> {
   final AuthService _authService;
   StreamSubscription? _streamSub;
 
-  AuthStateNotifier(this._authService) : super(const AuthState());
+  AuthNotifier(this._authService) : super(const AuthState());
 
   void getLoggedUser() {
     state = state.copyWith(loading: true);
     _streamSub = _authService.getLoggedUser$().listen((event) {
-      state = state.copyWith(user: Optional.ofNullable(event), loading: false);
+      state = state.copyWith(
+        user: Optional.ofNullable(event),
+        loading: false,
+      );
     });
   }
 

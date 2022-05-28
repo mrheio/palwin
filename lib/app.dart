@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:noctur/auth/screens/login/login.dart';
-import 'package:noctur/auth/screens/register/register.dart';
-import 'package:noctur/common/styles.dart';
-import 'package:noctur/game/screens/add_game/add_game.dart';
-import 'package:noctur/home/screens/home.dart';
-import 'package:noctur/team/screens/add_team/add_team.dart';
-import 'package:noctur/team/screens/team_details/team_details.dart';
-import 'package:noctur/team/screens/teams_view/teams_view.dart';
-import 'package:noctur/user/screens/profile_view.dart';
 import 'package:vrouter/vrouter.dart';
 
+import 'auth/screens/login/login.dart';
+import 'auth/screens/register/register.dart';
 import 'auth_guard.dart';
+import 'common/styles.dart';
+import 'game/screens/add_game/add_game.dart';
 import 'game/screens/games_view/games_view.dart';
+import 'home/screens/home.dart';
 import 'layout.dart';
+import 'team/screens/add_team/add_team.dart';
+import 'team/screens/team_details/team_details.dart';
+import 'team/screens/teams_view/teams_view.dart';
+import 'user/screens/profile_view.dart';
 
 class App extends ConsumerWidget {
   const App({Key? key}) : super(key: key);
@@ -27,6 +27,7 @@ class App extends ConsumerWidget {
         textSelectionTheme: TextSelectionThemeData(
           cursorColor: AppColor.primary[20],
         ),
+        colorScheme: ColorScheme.dark(secondary: AppColor.primary[90]!),
       ),
       builder: (context, child) => AuthGuard(child: child),
       routes: [

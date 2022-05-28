@@ -1,6 +1,6 @@
-import 'package:noctur/common/database/base_service.dart';
-import 'package:noctur/user/user.dart';
-import 'package:noctur/user/user_repository.dart';
+import '../common/database/base_service.dart';
+import 'user.dart';
+import 'user_repository.dart';
 
 class UserService extends BaseService<User, UserRepository> {
   const UserService(UserRepository userRepository) : super(userRepository);

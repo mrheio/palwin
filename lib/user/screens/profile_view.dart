@@ -2,14 +2,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:noctur/auth/auth_providers.dart';
+
+import '../../auth/auth_providers.dart';
 
 class ProfileView extends ConsumerWidget {
   const ProfileView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final authNotifier = ref.read(authStateNotifierProvider.notifier);
+    final authNotifier = ref.read(authStateProvider.notifier);
 
     return Container(
       child: Column(

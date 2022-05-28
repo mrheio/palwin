@@ -1,4 +1,4 @@
-import 'package:noctur/common/errors/invalid_data_format.dart';
+import '../errors/invalid_data_format.dart';
 
 class Validator {
   const Validator._();

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:noctur/auth/auth_providers.dart';
-import 'package:noctur/auth/auth_state.dart';
 import 'package:vrouter/vrouter.dart';
+
+import 'auth/auth_providers.dart';
+import 'auth/auth_state.dart';
 
 class AuthGuard extends ConsumerStatefulWidget {
   final Widget child;
@@ -29,7 +30,7 @@ class _AuthGuardState extends ConsumerState<AuthGuard> {
   @override
   void initState() {
     super.initState();
-    final authNotifier = ref.read(authStateNotifierProvider.notifier);
+    final authNotifier = ref.read(authStateProvider.notifier);
     removeListener =
         authNotifier.addListener(_onAuthStateChange, fireImmediately: false);
   }

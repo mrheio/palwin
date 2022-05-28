@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:noctur/common/widgets/app_button.dart';
-import 'package:noctur/common/widgets/app_column.dart';
-import 'package:noctur/common/widgets/header.dart';
-import 'package:noctur/common/widgets/logo.dart';
 import 'package:vrouter/vrouter.dart';
+
+import '../../common/widgets/app_button.dart';
+import '../../common/widgets/app_column.dart';
+import '../../common/widgets/header.dart';
+import '../../common/widgets/logo.dart';
 
 class WelcomeScreen extends ConsumerWidget {
   const WelcomeScreen({Key? key}) : super(key: key);

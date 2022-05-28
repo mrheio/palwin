@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:noctur/auth/auth_providers.dart';
-import 'package:noctur/common/styles.dart';
-import 'package:noctur/common/widgets/app_button.dart';
-import 'package:noctur/common/widgets/app_card.dart';
-import 'package:noctur/common/widgets/app_column.dart';
-import 'package:noctur/common/widgets/header.dart';
-import 'package:noctur/team/screens/team_details/team_details_state.dart';
-import 'package:noctur/user/user.dart';
 
+import '../../../auth/auth_providers.dart';
+import '../../../common/styles.dart';
+import '../../../common/widgets/app_button.dart';
+import '../../../common/widgets/app_card.dart';
+import '../../../common/widgets/app_column.dart';
+import '../../../common/widgets/header.dart';
 import '../../../common/widgets/loading.dart';
+import '../../../user/user.dart';
+import 'team_details_state.dart';
 
 class TeamDetailsAside extends ConsumerWidget {
   final String teamId;
@@ -18,7 +18,7 @@ class TeamDetailsAside extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final user = ref.watch(authStateNotifierProvider).user!;
+    final user = ref.watch(authStateProvider).user!;
     final state = ref.watch(teamDetailsStateProvider(teamId));
     final notifier = ref.read(teamDetailsStateProvider(teamId).notifier);
     final loading = state.loading;
@@ -39,10 +39,6 @@ class TeamDetailsAside extends ConsumerWidget {
               'Joc: ${team.game}',
               size: AppFontSize.h2,
             ),
-            const Header(
-              'Players',
-              size: AppFontSize.h2,
-            ),
             Expanded(
               child: MediaQuery.removePadding(
                 removeTop: true,
@@ -61,7 +57,7 @@ class TeamDetailsAside extends ConsumerWidget {
             ),
             if (team.isOwnedBy(user))
               AppButton(
-                onPressed: () {},
+                onPressed: notifier.deleteTeam,
                 child: const Text('Sterge echipa'),
                 fillWidth: true,
               ),

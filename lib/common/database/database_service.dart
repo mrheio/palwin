@@ -1,4 +1,4 @@
-import 'package:noctur/common/database/query_filters.dart';
+import 'query_filters.dart';
 
 abstract class DatabaseService<T> {
   const DatabaseService();

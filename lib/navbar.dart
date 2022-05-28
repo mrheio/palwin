@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:noctur/common/styles.dart';
-import 'package:noctur/nav_state.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 import 'package:vrouter/vrouter.dart';
+
+import 'common/styles.dart';
+import 'nav_state.dart';
 
 class Navbar extends ConsumerWidget {
   const Navbar({Key? key}) : super(key: key);

@@ -2,13 +2,14 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:noctur/auth/auth_providers.dart';
-import 'package:noctur/auth/auth_service.dart';
-import 'package:noctur/common/success.dart';
-import 'package:noctur/message/message.dart';
-import 'package:noctur/message/message_providers.dart';
-import 'package:noctur/message/message_service.dart';
 import 'package:optional/optional.dart';
+
+import '../../../auth/auth_providers.dart';
+import '../../../auth/auth_service.dart';
+import '../../../common/success.dart';
+import '../../../message/message.dart';
+import '../../../message/message_providers.dart';
+import '../../../message/message_service.dart';
 
 void scrollToBottom(ScrollController scrollController) {
   scrollController.jumpTo(scrollController.position.maxScrollExtent);

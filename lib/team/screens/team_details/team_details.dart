@@ -2,27 +2,37 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:noctur/common/styles.dart';
-import 'package:noctur/common/widgets/app_column.dart';
-import 'package:noctur/common/widgets/header.dart';
-import 'package:noctur/common/widgets/loading.dart';
-import 'package:noctur/team/screens/team_details/chat.dart';
-import 'package:noctur/team/screens/team_details/team_details_aside.dart';
-import 'package:noctur/team/screens/team_details/team_details_state.dart';
 
 import '../../../auth/auth_providers.dart';
+import '../../../common/styles.dart';
+import '../../../common/utils/ui_utils.dart';
+import '../../../common/widgets/app_column.dart';
+import '../../../common/widgets/header.dart';
+import '../../../common/widgets/loading.dart';
+import '../../../common/widgets/section_title.dart';
+import 'chat.dart';
+import 'team_details_aside.dart';
+import 'team_details_state.dart';
 
 class TeamDetails extends ConsumerWidget {
   final String teamId;
 
-  TeamDetails({required this.teamId, Key? key}) : super(key: key);
+  const TeamDetails({required this.teamId, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final user = ref.watch(authStateNotifierProvider).user!;
-    final teamDetailsState = ref.watch(teamDetailsStateProvider(teamId));
-    final loading = teamDetailsState.loading;
-    final team = teamDetailsState.team;
+    final user = ref.watch(authStateProvider.select((value) => value.user!));
+    final loading = ref.watch(
+        teamDetailsStateProvider(teamId).select((value) => value.loading));
+    final team = ref
+        .watch(teamDetailsStateProvider(teamId).select((value) => value.team));
+
+    ref.listen<TeamDetailsState>(teamDetailsStateProvider(teamId),
+        (previous, next) {
+      final success = next.success;
+      UiUtils.maybeShowSnackbar(context, success?.message);
+      UiUtils.maybePop(context, success != null);
+    });
 
     if (team == null || loading) {
       return const Loading(condition: true);
@@ -30,16 +40,10 @@ class TeamDetails extends ConsumerWidget {
 
     return AppColumn(
       children: [
-        SizedBox.fromSize(
-          size: const Size.fromHeight(80),
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            alignment: AlignmentDirectional.centerStart,
-            color: AppColor.primary[90],
-            child: Header(
-              team.name,
-              size: AppFontSize.h3,
-            ),
+        SectionTitle(
+          backgroundColor: AppColor.primary[90],
+          child: Header(
+            team.name,
           ),
         ),
         Expanded(
@@ -48,7 +52,9 @@ class TeamDetails extends ConsumerWidget {
               team.hasUser(user)
                   ? Chat(teamId: teamId)
                   : const Center(
-                      child: Header('Nu esti in echipa'),
+                      child: Header(
+                        'Nu esti in echipa',
+                      ),
                     ),
               TeamDetailsAside(teamId: teamId),
             ],

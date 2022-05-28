@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:noctur/floating_content.dart';
 
+import 'floating_content.dart';
 import 'navbar.dart';
 
 class Layout extends StatefulWidget {

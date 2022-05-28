@@ -2,15 +2,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:noctur/common/styles.dart';
-import 'package:noctur/common/widgets/app_circle_button.dart';
-import 'package:noctur/common/widgets/app_column.dart';
-import 'package:noctur/common/widgets/app_row.dart';
-import 'package:noctur/common/widgets/app_text_field.dart';
-import 'package:noctur/common/widgets/header.dart';
-import 'package:noctur/common/widgets/loading.dart';
-import 'package:noctur/message/message.dart';
-import 'package:noctur/team/screens/team_details/chat_state.dart';
+
+import '../../../common/styles.dart';
+import '../../../common/widgets/app_circle_button.dart';
+import '../../../common/widgets/app_column.dart';
+import '../../../common/widgets/app_row.dart';
+import '../../../common/widgets/app_text_field.dart';
+import '../../../common/widgets/header.dart';
+import '../../../common/widgets/loading.dart';
+import '../../../message/message.dart';
+import 'chat_state.dart';
 
 class Chat extends ConsumerWidget {
   final ScrollController _controller;

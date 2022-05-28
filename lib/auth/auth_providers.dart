@@ -1,10 +1,10 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:noctur/auth/google_auth_service.dart';
-import 'package:noctur/common/providers.dart';
-import 'package:noctur/user/user_providers.dart';
 
+import '../common/providers.dart';
+import '../user/user_providers.dart';
 import 'auth_service.dart';
 import 'auth_state.dart';
+import 'google_auth_service.dart';
 
 final authServiceProvider = Provider((ref) {
   final firebaseAuth = ref.read(firebaseAuthProvider);
@@ -18,8 +18,7 @@ final googleAuthServiceProvider = Provider((ref) {
   return GoogleAuthService(firebaseAuth, userRepository);
 });
 
-final authStateNotifierProvider =
-    StateNotifierProvider<AuthStateNotifier, AuthState>((ref) {
+final authStateProvider = StateNotifierProvider<AuthNotifier, AuthState>((ref) {
   final authService = ref.read(authServiceProvider);
-  return AuthStateNotifier(authService)..getLoggedUser();
+  return AuthNotifier(authService)..getLoggedUser();
 });

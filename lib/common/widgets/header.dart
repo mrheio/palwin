@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:noctur/common/styles.dart';
+
+import '../styles.dart';
 
 class Header extends StatelessWidget {
   final double size;
@@ -7,6 +8,7 @@ class Header extends StatelessWidget {
   final String data;
   final EdgeInsetsGeometry margin;
   final Color? color;
+  final TextOverflow? overflow;
 
   const Header(
     this.data, {
@@ -14,6 +16,7 @@ class Header extends StatelessWidget {
     this.weight = AppFontWeight.bold,
     this.margin = EdgeInsets.zero,
     this.color,
+    this.overflow,
     Key? key,
   }) : super(key: key);
 
@@ -23,6 +26,7 @@ class Header extends StatelessWidget {
       padding: margin,
       child: Text(
         data,
+        overflow: overflow,
         style: TextStyle(
           fontSize: size,
           fontWeight: weight,

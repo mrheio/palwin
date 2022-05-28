@@ -1,9 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:noctur/common/errors/err.dart';
-import 'package:noctur/common/errors/invalid_data_format.dart';
-import 'package:noctur/common/errors/other_error.dart';
-import 'package:noctur/common/errors/resource_already_exists.dart';
-import 'package:noctur/common/errors/resource_not_found.dart';
+
+import 'err.dart';
+import 'invalid_data_format.dart';
+import 'other_error.dart';
+import 'resource_already_exists.dart';
+import 'resource_not_found.dart';
 
 class AuthError extends Err {
   const AuthError(

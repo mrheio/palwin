@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:noctur/common/utils/validator.dart';
-import 'package:noctur/common/widgets/app_button.dart';
-import 'package:noctur/common/widgets/app_column.dart';
-import 'package:noctur/common/widgets/app_select_field.dart';
-import 'package:noctur/common/widgets/app_text_field.dart';
-import 'package:noctur/team/screens/add_team/add_team_state.dart';
 
+import '../../../common/styles.dart';
+import '../../../common/utils/validator.dart';
+import '../../../common/widgets/app_button.dart';
+import '../../../common/widgets/app_column.dart';
+import '../../../common/widgets/app_select_field.dart';
+import '../../../common/widgets/app_text_field.dart';
 import '../../../game/game.dart';
+import '../../../game/game_providers.dart';
+import 'add_team_form_state.dart';
+import 'add_team_state.dart';
 
 class AddTeamForm extends ConsumerWidget {
   final GlobalKey<FormState> _formKey;
@@ -18,40 +21,41 @@ class AddTeamForm extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final addTeamState = ref.watch(addTeamStateNotifierProvider);
-    final addTeamNotifier = ref.read(addTeamStateNotifierProvider.notifier);
+    final games = ref.watch(gamesProvider$).value ?? [];
+    final state = ref.watch(addTeamFormStateProvider);
+    final notifier = ref.read(addTeamStateProvider.notifier);
 
     return Form(
       key: _formKey,
       child: AppColumn(
-        spacing: 16,
+        spacing: AppSpacing.m,
         children: [
           AppTextField(
-            controller: addTeamState.nameField,
+            controller: state.nameController,
             hint: 'Nume echipa',
-            validators: [Validator.required],
+            validators: const [Validator.required],
           ),
           AppSelectField<Game>(
-            value: addTeamState.game,
-            items: addTeamState.games,
-            validators: [Validator.required],
-            onChanged: addTeamNotifier.setGame,
+            value: state.game,
+            items: games,
+            validators: const [Validator.required],
+            onChanged: state.setGame,
             displayMapper: (e) => Text(e.name),
             hint: 'Joc',
           ),
           AppTextField(
-            controller: addTeamState.capacityField,
+            controller: state.slotsController,
             hint: 'Numar jucatori in echipa',
-            validators: [Validator.required, Validator.numeric],
+            validators: const [Validator.required, Validator.numeric],
           ),
           AppTextField(
-            controller: addTeamState.descriptionField,
+            controller: state.descriptionController,
             hint: 'Descriere',
           ),
           AppButton(
             onPressed: () {
               if (_formKey.currentState!.validate()) {
-                addTeamNotifier.addTeam();
+                notifier.addTeam();
               }
             },
             child: const Text('Adauga echipa'),

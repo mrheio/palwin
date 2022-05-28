@@ -1,18 +1,25 @@
-import 'package:noctur/common/database/serializable.dart';
-import 'package:noctur/common/utils/helpers.dart';
+import '../common/database/serializable.dart';
 
 class Game extends Serializable {
   final String name;
-  final int capacity;
+  final int teamSize;
 
-  Game({String? id, required this.name, required this.capacity})
-      : super(id ?? replaceSpacesWithUnderscores(name));
+  Game({
+    required this.name,
+    required this.teamSize,
+  }) : super(name.replaceAll(' ', '_'));
+
+  factory Game.fromForm({required String name, required String teamSize}) {
+    return Game(
+      name: name,
+      teamSize: int.parse(teamSize),
+    );
+  }
 
   factory Game.fromMap(Map<String, dynamic> map) {
     return Game(
-      id: map['id'],
       name: map['name'],
-      capacity: map['capacity'],
+      teamSize: map['teamSize'],
     );
   }
 
@@ -21,13 +28,13 @@ class Game extends Serializable {
     return {
       'id': id,
       'name': name,
-      'capacity': capacity,
+      'teamSize': teamSize,
     };
   }
 
-  static String toId(String name) => replaceSpacesWithUnderscores(name);
-  static String toName(String id) => replaceUnderscoresWithSpaces(id);
+  static String toId(String name) => name.replaceAll(' ', '_');
+  static String toName(String id) => id.replaceAll('_', ' ');
 
   @override
-  List<Object?> get props => [id, name, capacity];
+  List<Object?> get props => [id, name, teamSize];
 }

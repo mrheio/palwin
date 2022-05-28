@@ -1,87 +1,66 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:noctur/auth/auth_providers.dart';
-import 'package:noctur/auth/auth_service.dart';
-import 'package:noctur/auth/google_auth_service.dart';
-import 'package:optional/optional.dart';
 
 import '../../../common/errors/err.dart';
-import '../../../common/success.dart';
+import '../../auth_providers.dart';
+import '../../auth_service.dart';
+import '../../google_auth_service.dart';
+import 'login_form_state.dart';
 
-class LoginState {
-  final TextEditingController emailField;
-  final TextEditingController passwordField;
-  final bool loading;
-  final Err? error;
-  final Success? success;
+abstract class LoginState {
+  const LoginState();
+}
 
-  LoginState({
-    TextEditingController? emailField,
-    TextEditingController? passwordField,
-    this.loading = false,
-    this.error,
-    this.success,
-  })  : emailField = emailField ?? TextEditingController(),
-        passwordField = passwordField ?? TextEditingController();
+class LoginInit extends LoginState {
+  const LoginInit();
+}
 
-  void dispose() {
-    emailField.dispose();
-    passwordField.dispose();
-  }
+class LoginLoading extends LoginState {
+  const LoginLoading();
+}
 
-  LoginState copyWith({
-    bool? loading,
-    Optional<Err>? error,
-    Optional<Success>? success,
-  }) {
-    return LoginState(
-      emailField: emailField,
-      passwordField: passwordField,
-      loading: loading ?? this.loading,
-      error: error != null ? error.orElseNull : this.error,
-      success: success != null ? success.orElseNull : this.success,
-    );
-  }
+class LoginSuccess extends LoginState {
+  const LoginSuccess();
+}
+
+class LoginError extends LoginState {
+  final Err error;
+
+  const LoginError(this.error);
 }
 
 class LoginStateNotifier extends StateNotifier<LoginState> {
   final AuthService _authService;
   final GoogleAuthService _googleAuthService;
+  final LoginFormState _formState;
 
-  LoginStateNotifier(this._authService, this._googleAuthService)
-      : super(LoginState());
+  LoginStateNotifier(
+    this._authService,
+    this._googleAuthService,
+    this._formState,
+  ) : super(const LoginInit());
 
   Future<void> logIn() async {
-    state = state.copyWith(
-        loading: true,
-        error: const Optional.empty(),
-        success: const Optional.empty());
+    state = const LoginLoading();
     try {
-      final email = state.emailField.text.trim();
-      final password = state.passwordField.text.trim();
       await _authService.logInWithEmailAndPassword(
-          email: email, password: password);
-      state =
-          state.copyWith(loading: false, success: Optional.of(const Success()));
+        email: _formState.email,
+        password: _formState.password,
+      );
+      state = const LoginSuccess();
     } on Err catch (error) {
-      state = state.copyWith(loading: false, error: Optional.of(error));
+      state = LoginError(error);
     }
   }
 
   Future<void> logInWithGoogle() async {
     await _googleAuthService.logInWithGoogle();
   }
-
-  @override
-  void dispose() {
-    state.dispose();
-    super.dispose();
-  }
 }
 
-final loginStateNotifierProvider =
+final loginStateProvider =
     StateNotifierProvider.autoDispose<LoginStateNotifier, LoginState>((ref) {
   final authService = ref.read(authServiceProvider);
   final googleAuthService = ref.read(googleAuthServiceProvider);
-  return LoginStateNotifier(authService, googleAuthService);
+  final formState = ref.watch(loginFormStateProvider);
+  return LoginStateNotifier(authService, googleAuthService, formState);
 });
