@@ -2,65 +2,68 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:noctur/message/message_providers.dart';
+import 'package:noctur/team/screens/team_details/chat_state.dart';
+import 'package:noctur/team/team.dart';
+import 'package:noctur/team/team_providers.dart';
 
+import '../../../common/app_widgets.dart';
 import '../../../common/styles.dart';
-import '../../../common/widgets/app_circle_button.dart';
-import '../../../common/widgets/app_column.dart';
-import '../../../common/widgets/app_row.dart';
-import '../../../common/widgets/app_text_field.dart';
-import '../../../common/widgets/header.dart';
-import '../../../common/widgets/loading.dart';
 import '../../../message/message.dart';
-import 'chat_state.dart';
+
+final _scrollControllerProvider = Provider.autoDispose((ref) {
+  final controller = ScrollController();
+  ref.onDispose(() {
+    controller.dispose();
+  });
+  return controller;
+});
 
 class Chat extends ConsumerWidget {
-  final ScrollController _controller;
-  final String teamId;
+  final Team team;
 
-  Chat({required this.teamId, Key? key})
-      : _controller = ScrollController(),
-        super(key: key);
+  const Chat(this.team, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final chatState = ref.watch(chatStateProvider(teamId));
-    final messages = chatState.messages;
-    final loading = chatState.loading;
-
-    ref.listen<ChatState>(chatStateProvider(teamId), (prev, next) {
-      final success = next.success;
-      if (success != null) {
-        _controller.jumpTo(0);
-      }
-    });
-
-    return Loading(
-      condition: loading,
-      child: AppColumn(
-        children: [
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.only(bottom: 8),
-              child: ListView.separated(
-                controller: _controller,
-                reverse: true,
-                separatorBuilder: (context, index) => const SizedBox(
-                  height: 4,
+    return ref.watch(teamMessagesProvider$(team.id)).maybeWhen(
+          orElse: () => const Loading(),
+          data: (messages) => AppColumn(
+            children: [
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: 8),
+                  child: _MessagesList(messages),
                 ),
-                itemCount: messages.length,
-                itemBuilder: (context, index) {
-                  final m = messages[index];
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: _MessageSpan(m),
-                  );
-                },
               ),
-            ),
+              _SendMessageTextField(team),
+            ],
           ),
-          _SendMessageTextField(teamId),
-        ],
-      ),
+        );
+  }
+}
+
+class _MessagesList extends ConsumerWidget {
+  final List<Message> messages;
+
+  const _MessagesList(this.messages);
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final scrollController = ref.watch(_scrollControllerProvider);
+
+    return ListView.separated(
+      controller: scrollController,
+      reverse: true,
+      separatorBuilder: (context, index) => const SizedBox(height: 4),
+      itemCount: messages.length,
+      itemBuilder: (context, index) {
+        final m = messages[index];
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: _MessageSpan(m),
+        );
+      },
     );
   }
 }
@@ -96,30 +99,37 @@ class _MessageSpan extends StatelessWidget {
 }
 
 class _SendMessageTextField extends ConsumerWidget {
-  final String teamId;
+  final Team team;
 
-  const _SendMessageTextField(this.teamId);
+  const _SendMessageTextField(this.team);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final controller = ref.watch(chatStateProvider(teamId)).messageField;
-    final hasText = ref.watch(chatStateProvider(teamId)).hasText;
-    final notifier = ref.read(chatStateProvider(teamId).notifier);
+    final state = ref.watch(chatStateProvider);
+    final scrollController = ref.watch(_scrollControllerProvider);
+
+    Future<void> sendMessage() async {
+      await ref
+          .read(messageServiceProvider(team.id))
+          .sendMessage(state.message);
+      state.clearController();
+      scrollController.jumpTo(0);
+    }
 
     return AppRow(
       margin: const EdgeInsets.only(left: 16, right: 16, bottom: 8),
-      spacing: 8,
+      spacing: AppSpacing.m,
       children: [
         Expanded(
           child: AppTextField(
-            controller: controller,
+            controller: state.messageController,
             maxLines: null,
-            onChanged: (val) => notifier.handleTextChange(),
+            onChanged: state.handleMessageInputChange,
           ),
         ),
         AppCircleButton(
           child: const Icon(Icons.send),
-          onPressed: hasText ? notifier.addMessage : null,
+          onPressed: state.hasMessageToSend ? sendMessage : null,
         )
       ],
     );

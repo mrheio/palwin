@@ -58,3 +58,23 @@ class AppFontWeight {
   static const FontWeight semibold = FontWeight.w400;
   static const FontWeight bold = FontWeight.bold;
 }
+
+EdgeInsets space(dynamic spacing) {
+  if (spacing is double) {
+    return EdgeInsets.all(spacing);
+  }
+  if (spacing is List<double>) {
+    if (spacing.length == 2) {
+      return EdgeInsets.symmetric(vertical: spacing[0], horizontal: spacing[1]);
+    }
+    if (spacing.length == 4) {
+      return EdgeInsets.only(
+        top: spacing[0],
+        left: spacing[1],
+        bottom: spacing[2],
+        right: spacing[3],
+      );
+    }
+  }
+  throw UnimplementedError();
+}

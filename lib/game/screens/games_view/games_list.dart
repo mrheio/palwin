@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:noctur/game/screens/games_view/games_view.dart';
 
 import '../../../common/app_widgets.dart';
 import '../../../common/styles.dart';
@@ -15,20 +16,27 @@ class GamesList extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return ref.watch(gamesProvider$).maybeWhen(
           orElse: () => const Loading(),
-          data: (games) => MediaQuery.removePadding(
-            context: context,
-            removeTop: true,
-            child: ListView.separated(
-              separatorBuilder: (context, index) => const SizedBox(
-                height: 16,
+          data: (games) {
+            final gameSearch = ref.watch(gameSearchProvider);
+            final filteredGames = games
+                .where((element) => element.name
+                    .toLowerCase()
+                    .contains(gameSearch.toLowerCase()))
+                .toList();
+            return MediaQuery.removePadding(
+              context: context,
+              removeTop: true,
+              child: ListView.separated(
+                separatorBuilder: (context, index) =>
+                    const SizedBox(height: 16),
+                itemCount: filteredGames.length,
+                itemBuilder: (context, index) {
+                  final game = filteredGames[index];
+                  return _GameCard(game);
+                },
               ),
-              itemCount: games.length,
-              itemBuilder: (context, index) {
-                final game = games[index];
-                return _GameCard(game);
-              },
-            ),
-          ),
+            );
+          },
         );
   }
 }

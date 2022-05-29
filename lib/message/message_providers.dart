@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:noctur/auth/auth_providers.dart';
 
 import '../common/database/firestore_service.dart';
 import '../common/providers.dart';
@@ -20,5 +21,6 @@ final messageRepositoryProvider = Provider.family((ref, String teamId) {
 final messageServiceProvider = Provider.family((ref, String teamId) {
   final messageRepository = ref.read(messageRepositoryProvider(teamId));
   final userRepository = ref.read(userRepositoryProvider);
-  return MessageService(messageRepository, userRepository);
+  final authService = ref.read(authServiceProvider);
+  return MessageService(messageRepository, userRepository, authService);
 });

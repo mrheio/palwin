@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:noctur/common/styles.dart';
 
 import '../../../common/app_widgets.dart';
 import '../../../common/utils/validator.dart';
@@ -18,10 +19,16 @@ class AddGameForm extends ConsumerWidget {
     final state = ref.watch(addGameFormStateProvider);
     final notifier = ref.read(addGameStateProvider.notifier);
 
+    Future<void> handleAddGame() async {
+      if (_formKey.currentState!.validate()) {
+        await notifier.addGame();
+      }
+    }
+
     return Form(
       key: _formKey,
       child: AppColumn(
-        spacing: 16,
+        spacing: AppSpacing.m,
         children: [
           AppTextField(
             controller: state.nameController,
@@ -34,11 +41,7 @@ class AddGameForm extends ConsumerWidget {
             validators: const [Validator.required, Validator.numeric],
           ),
           AppButton(
-            onPressed: () {
-              if (_formKey.currentState!.validate()) {
-                notifier.addGame();
-              }
-            },
+            onPressed: handleAddGame,
             child: const Text('Adauga joc'),
             fillWidth: true,
           ),

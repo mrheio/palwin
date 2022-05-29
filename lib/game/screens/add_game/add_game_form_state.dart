@@ -7,8 +7,6 @@ class AddGameFormState {
   final TextEditingController nameController = TextEditingController();
   final TextEditingController teamSizeController = TextEditingController();
 
-  AddGameFormState();
-
   String get name => nameController.text.trim();
   String get teamSize => teamSizeController.text.trim();
 

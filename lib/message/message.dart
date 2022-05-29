@@ -10,7 +10,7 @@ class Message extends Serializable {
   final Optional<User> user;
 
   const Message({
-    required String id,
+    String id = '',
     required this.message,
     required this.uid,
     required this.createdAt,

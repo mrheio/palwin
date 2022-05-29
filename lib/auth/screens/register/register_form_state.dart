@@ -4,14 +4,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../common/utils/ui_utils.dart';
 
 class RegisterFormState {
-  final TextEditingController emailController;
-  final TextEditingController usernameController;
-  final TextEditingController passwordController;
-
-  RegisterFormState()
-      : emailController = TextEditingController(),
-        usernameController = TextEditingController(),
-        passwordController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController usernameController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
 
   void dispose() {
     UiUtils.disposeControllers([

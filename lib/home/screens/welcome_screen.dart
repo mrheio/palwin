@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:noctur/common/styles.dart';
 import 'package:vrouter/vrouter.dart';
 
 import '../../common/widgets/app_button.dart';
@@ -15,9 +16,9 @@ class WelcomeScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       body: Container(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(AppSpacing.m),
         child: AppColumn(
-          spacing: 16,
+          spacing: AppSpacing.m,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const Logo(),

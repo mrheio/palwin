@@ -26,3 +26,5 @@ final gameServiceProvider = Provider((ref) {
 final gamesProvider$ = StreamProvider.autoDispose<List<Game>>((ref) {
   return ref.read(gameServiceProvider).getAll$();
 });
+
+final gameSearchProvider = StateProvider.autoDispose((ref) => '');

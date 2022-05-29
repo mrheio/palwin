@@ -7,8 +7,6 @@ class LoginFormState {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
-  LoginFormState();
-
   void dispose() {
     UiUtils.disposeControllers([
       emailController,

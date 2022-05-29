@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:noctur/message/message_providers.dart';
 
 import '../auth/auth_providers.dart';
 import '../common/database/firestore_service.dart';
@@ -6,6 +7,7 @@ import '../common/database/query_filters.dart';
 import '../common/providers.dart';
 import '../game/game.dart';
 import '../game/game_providers.dart';
+import '../message/message.dart';
 import '../user/user_providers.dart';
 import 'team.dart';
 import 'team_repository.dart';
@@ -62,4 +64,18 @@ final teamsProvider$ = StreamProvider((ref) {
 
   final teamService = ref.read(teamServiceProvider);
   return teamService.getWhere$(query);
+});
+
+final teamProvider$ =
+    StreamProvider.family.autoDispose<Team?, String>((ref, teamId) {
+  return ref.read(teamServiceProvider).getTeamWithUsers$(teamId);
+});
+
+final teamMessagesProvider$ = StreamProvider.family
+    .autoDispose<List<Message>, String>((ref, teamId) async* {
+  final team = await ref.watch(teamProvider$(teamId).future);
+  if (team != null) {
+    yield* ref.read(messageServiceProvider(team.id)).getAll$();
+  }
+  yield [];
 });

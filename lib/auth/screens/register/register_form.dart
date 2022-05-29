@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:noctur/common/styles.dart';
 
 import '../../../common/utils/validator.dart';
 import '../../../common/widgets/app_button.dart';
@@ -22,10 +23,16 @@ class RegisterForm extends ConsumerWidget {
     final state = ref.read(registerFormStateProvider);
     final notifier = ref.read(registerStateProvider.notifier);
 
+    Future<void> handleRegister() async {
+      if (_formKey.currentState!.validate()) {
+        await notifier.register();
+      }
+    }
+
     return Form(
       key: _formKey,
       child: AppColumn(
-        spacing: 16,
+        spacing: AppSpacing.m,
         children: [
           AppTextField(
             controller: state.emailController,
@@ -44,11 +51,7 @@ class RegisterForm extends ConsumerWidget {
             obscureText: true,
           ),
           AppButton(
-            onPressed: () {
-              if (_formKey.currentState!.validate()) {
-                notifier.register();
-              }
-            },
+            onPressed: handleRegister,
             child: const Text('Creeaza cont'),
             fillWidth: true,
           ),

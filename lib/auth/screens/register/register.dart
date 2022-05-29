@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:noctur/common/styles.dart';
 
 import '../../../common/utils/ui_utils.dart';
 import '../../../common/widgets/app_column.dart';
@@ -27,11 +28,11 @@ class Register extends ConsumerWidget {
       body: Loading(
         condition: state is RegisterLoading,
         child: Container(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(AppSpacing.m),
           child: Center(
             child: SingleChildScrollView(
               child: AppColumn(
-                spacing: 24,
+                spacing: AppSpacing.l,
                 children: [
                   const Header('Inregistrare'),
                   RegisterForm(),

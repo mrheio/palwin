@@ -42,7 +42,7 @@ class _TeamCard extends ConsumerWidget {
       onTap: () => VRouter.of(context).to('/tabs/teams/${team.id}'),
       child: AppColumn(
         crossAxisAlignment: CrossAxisAlignment.start,
-        spacing: 12,
+        spacing: AppSpacing.m,
         children: [
           Header(
             team.name,

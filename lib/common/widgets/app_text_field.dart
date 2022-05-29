@@ -13,6 +13,8 @@ class AppTextField extends StatelessWidget {
   final EdgeInsetsGeometry margin;
   final int? maxLines;
   final void Function(String)? onChanged;
+  final Widget? prefixIcon;
+  final Widget? suffixIcon;
 
   const AppTextField({
     this.controller,
@@ -24,6 +26,8 @@ class AppTextField extends StatelessWidget {
     this.margin = EdgeInsets.zero,
     this.maxLines = 1,
     this.onChanged,
+    this.prefixIcon,
+    this.suffixIcon,
     Key? key,
   }) : super(key: key);
 
@@ -66,6 +70,8 @@ class AppTextField extends StatelessWidget {
           ),
           filled: true,
           fillColor: AppColor.primary[70],
+          prefixIcon: prefixIcon,
+          suffixIcon: suffixIcon,
         ),
         validator: _validator,
         obscureText: obscureText,

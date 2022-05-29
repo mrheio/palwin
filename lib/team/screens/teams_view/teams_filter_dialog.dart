@@ -1,13 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../common/app_widgets.dart';
 import '../../../common/styles.dart';
-import '../../../common/widgets/app_column.dart';
-import '../../../common/widgets/app_row.dart';
-import '../../../common/widgets/app_select_field.dart';
-import '../../../common/widgets/app_text.dart';
-import '../../../common/widgets/header.dart';
-import '../../../common/widgets/loading.dart';
 import '../../../game/game.dart';
 import '../../../game/game_providers.dart';
 import '../../team_providers.dart';
