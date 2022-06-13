@@ -6,17 +6,23 @@ import 'app.dart';
 
 class Logger extends ProviderObserver {
   @override
+  void didAddProvider(
+      ProviderBase provider, Object? value, ProviderContainer container) {
+    super.didAddProvider(provider, value, container);
+  }
+
+  @override
   void didUpdateProvider(
     ProviderBase provider,
     Object? previousValue,
     Object? newValue,
     ProviderContainer container,
   ) {
-    print('''
-{
-  "provider": "${provider.name ?? provider.runtimeType}",
-  "newValue": "$newValue"
-}''');
+//     print('''
+// {
+//   "provider": "${provider.name ?? provider.runtimeType}",
+//   "newValue": "$newValue"
+// }''');
   }
 }
 

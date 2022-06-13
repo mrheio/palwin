@@ -1,48 +1,16 @@
-import 'database_service.dart';
-import 'query_filters.dart';
+import 'package:noctur/common/database/query_helpers.dart';
+import 'package:optional/optional.dart';
 
 abstract class BaseRepository<T> {
-  final DatabaseService<T> databaseService;
-
-  const BaseRepository(this.databaseService);
-
-  Future<void> add(T data) async {
-    databaseService.add(data);
-  }
-
-  Future<void> deleteById(String id) async {
-    databaseService.deleteById(id);
-  }
-
-  Future<void> deleteWhere(List<Where> where) async {
-    databaseService.deleteWhere(where);
-  }
-
-  Future<void> update(String id, T newData) async {
-    databaseService.update(id, newData);
-  }
-
-  Future<List<T>> getAll() {
-    return databaseService.getAll();
-  }
-
-  Stream<List<T>> getAll$() {
-    return databaseService.getAll$();
-  }
-
-  Future<T?> getById(String id) {
-    return databaseService.getById(id);
-  }
-
-  Stream<T?> getById$(String id) {
-    return databaseService.getById$(id);
-  }
-
-  Future<List<T>> getWhere(List<QueryFilter> filters) {
-    return databaseService.getWhere(filters);
-  }
-
-  Stream<List<T>> getWhere$(List<QueryFilter> filters) {
-    return databaseService.getWhere$(filters);
-  }
+  Future<List<T>> getAll();
+  Stream<List<T>> getAll$();
+  Future<Optional<T>> getById(String id);
+  Stream<Optional<T>> getById$(String id);
+  Future<List<T>> getWhere(QueryFilter filter);
+  Stream<List<T>> getWhere$(QueryFilter filter);
+  Future<void> add(T data);
+  Future<void> deleteAll();
+  Future<void> deleteById(String id);
+  Future<void> deleteWhere(QueryFilter filter);
+  Future<void> update(T newData);
 }

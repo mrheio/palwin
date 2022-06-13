@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "856855486155-54483gf4qul0ck6qm6eujqgg7p273687.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.drg.noctur",
+            "certificate_hash": "94e72144f5ea6d7840329c477065fc7db7294dc4"
+          }
+        },
+        {
           "client_id": "856855486155-nnpj7pbq9o3ej29odllpfrm6u7is7vpq.apps.googleusercontent.com",
           "client_type": 3
         }

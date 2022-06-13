@@ -1,39 +1,61 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
-import 'package:vrouter/vrouter.dart';
 
-import 'common/styles.dart';
-import 'nav_state.dart';
+import 'common/styles/app_color.dart';
 
-class Navbar extends ConsumerWidget {
-  const Navbar({Key? key}) : super(key: key);
+class Navbar extends StatefulWidget {
+  final int selectedIndex;
+
+  const Navbar({
+    required this.selectedIndex,
+    Key? key,
+  }) : super(key: key);
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final state = ref.watch(navStateNotifierProvider);
-    final notifier = ref.read(navStateNotifierProvider.notifier);
+  State<StatefulWidget> createState() {
+    return _NavbarState();
+  }
+}
 
-    ref.listen<NavState>(navStateNotifierProvider, (previous, next) {
-      VRouter.of(context).to(next.tab);
-    });
+class _NavbarState extends State<Navbar> {
+  void _handleTap(int index) {
+    if (index == 0) {
+      GoRouter.of(context).go('/');
+    }
+    if (index == 1) {
+      GoRouter.of(context).go('/teams');
+    }
+    if (index == 2) {
+      GoRouter.of(context).go('/games');
+    }
+    if (index == 3) {
+      GoRouter.of(context).go('/account');
+    }
+  }
 
+  @override
+  Widget build(BuildContext context) {
     return SalomonBottomBar(
-      currentIndex: state.index,
-      onTap: notifier.setIndex,
+      currentIndex: widget.selectedIndex,
+      onTap: _handleTap,
       selectedItemColor: AppColor.secondary[50],
       items: [
         SalomonBottomBarItem(
-          icon: Icon(Icons.group),
-          title: Text('Echipe'),
+          icon: const Icon(Icons.home),
+          title: const Text('Acasa'),
         ),
         SalomonBottomBarItem(
-          icon: Icon(Icons.gamepad),
-          title: Text("Jocuri"),
+          icon: const Icon(Icons.group),
+          title: const Text('Echipe'),
         ),
         SalomonBottomBarItem(
-          icon: Icon(Icons.search),
-          title: Text("Profil"),
+          icon: const Icon(Icons.gamepad),
+          title: const Text("Jocuri"),
+        ),
+        SalomonBottomBarItem(
+          icon: const Icon(Icons.person),
+          title: const Text("Profil"),
         ),
       ],
     );

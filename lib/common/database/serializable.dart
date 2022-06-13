@@ -1,28 +1,39 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
+import 'package:noctur/game/logic/logic.dart';
+import 'package:noctur/team/logic/logic.dart';
+import 'package:noctur/team/logic/message.dart';
+import 'package:noctur/user/logic/logic.dart';
 
-import '../../game/game.dart';
-import '../../message/message.dart';
-import '../../team/team.dart';
-import '../../user/user.dart';
-
-typedef Deserializer = Serializable Function(Map<String, dynamic>);
-
-final Map<Type, Deserializer> deserializers = {
-  User: (Map<String, dynamic> data) => User.fromMap(data),
-  Team: (Map<String, dynamic> data) => Team.fromMap(data),
-  Game: (Map<String, dynamic> data) => Game.fromMap(data),
-  Message: (Map<String, dynamic> data) => Message.fromMap(data),
+final _docDeserializers = {
+  SimpleUser: (DocumentSnapshot<Map<String, dynamic>> doc) =>
+      SimpleUser.fromDocument(doc),
+  ComplexUser: (DocumentSnapshot<Map<String, dynamic>> doc) =>
+      ComplexUser.fromDocument(doc),
+  Team: (DocumentSnapshot<Map<String, dynamic>> doc) => Team.fromDocument(doc),
+  Game: (DocumentSnapshot<Map<String, dynamic>> doc) => Game.fromDocument(doc),
+  Message: (DocumentSnapshot<Map<String, dynamic>> doc) =>
+      Message.fromDocument(doc),
 };
 
-abstract class Serializable extends Equatable {
+abstract class Serializable<T> extends Equatable {
   final String id;
+  final DateTime createdAt;
 
-  const Serializable(this.id);
+  Serializable({this.id = '', DateTime? createdAt})
+      : createdAt = createdAt ?? DateTime.now();
 
-  Map<String, dynamic> toMap();
+  Map<String, dynamic> toJson();
 
-  static T deserializeDocument<T extends Serializable>(DocumentSnapshot doc) {
-    return deserializers[T]!(doc.data() as Map<String, dynamic>) as T;
+  T copyWith({String? id, DateTime? createdAt});
+
+  @override
+  List<Object?> get props => [id];
+
+  static G deserialize<G extends Serializable>(dynamic payload) {
+    if (payload is DocumentSnapshot<Map<String, dynamic>>) {
+      return _docDeserializers[G]!(payload) as G;
+    }
+    throw UnimplementedError();
   }
 }

@@ -1,6 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:vrouter/vrouter.dart';
+
+enum SnackbarStyle { info, success, error, warning }
 
 class UiUtils {
   const UiUtils._();
@@ -16,23 +16,21 @@ class UiUtils {
       controller.clear();
     }
   }
+}
 
-  static showSnackbar(BuildContext context, String message) {
-    var snackBar = SnackBar(
-      content: Text(message),
-    );
-    ScaffoldMessenger.of(context).showSnackBar(snackBar);
-  }
+GlobalKey<FormState> createFormKey([GlobalKey<FormState>? formKey]) {
+  return formKey ?? GlobalKey<FormState>();
+}
 
-  static maybeShowSnackbar(BuildContext context, String? message) {
-    if (message != null && message.isNotEmpty) {
-      showSnackbar(context, message);
-    }
-  }
+TextEditingController createTextEditingController(
+    [TextEditingController? controller]) {
+  return controller ?? TextEditingController();
+}
 
-  static maybePop(BuildContext context, bool condition) {
-    if (condition) {
-      VRouter.of(context).pop();
-    }
+String getText(TextEditingController controller) => controller.text.trim();
+
+void disposeControllers(List<TextEditingController> controllers) {
+  for (final controller in controllers) {
+    controller.dispose();
   }
 }
