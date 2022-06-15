@@ -20,8 +20,8 @@ class GamesService {
         .getAll$()
         .asyncMap((event) => Future.wait(event.map((e) async {
               if (e.iconPath.isNotEmpty) {
-                final icon = await _storage.getFile(e.iconPath);
-                return e.copyWith(icon: icon);
+                final iconURL = await _storage.getDownloadURL(e.iconPath);
+                return e.copyWith(downloadURL: iconURL);
               }
               return e;
             })));

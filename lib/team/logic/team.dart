@@ -70,7 +70,6 @@ class Team extends Serializable<Team> {
     int? slots,
     int? freeSlots,
     int? filledSlots,
-    List<String>? playersIds,
     List<SimpleUser>? users,
     DateTime? createdAt,
   }) {

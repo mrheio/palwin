@@ -93,7 +93,6 @@ class AppStylesFlex {
     subThemesData: const FlexSubThemesData(
       inputDecoratorBorderType: FlexInputBorderType.outline,
       inputDecoratorRadius: 12,
-      tabBarItemSchemeColor: SchemeColor.secondary,
     ),
   );
 

@@ -11,11 +11,11 @@ class App extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final router = ref.watch(routerProvider);
-    final styles = ref.watch(stylesProvider);
+    final styles = ref.watch(stylesFlexProvider);
 
     return Portal(
       child: MaterialApp.router(
-        theme: styles.darkTheme,
+        theme: styles.themeData,
         routeInformationParser: router.routeInformationParser,
         routerDelegate: router.routerDelegate,
       ),

@@ -72,13 +72,13 @@ class TeamsService {
     required String description,
     required Game game,
   }) async {
-    final _slots = int.parse(slots);
+    final parsedSlots = int.parse(slots);
 
-    if (_slots < 2) {
+    if (parsedSlots < 2) {
       throw const TeamSizeTooSmall();
     }
 
-    if (_slots > game.teamSize) {
+    if (parsedSlots > game.teamSize) {
       throw GameTeamSizeOverflow(game);
     }
 
@@ -88,8 +88,8 @@ class TeamsService {
       gameId: game.id,
       description: description,
       uid: user.id,
-      slots: int.parse(slots),
-      freeSlots: _slots - 1,
+      slots: parsedSlots,
+      freeSlots: parsedSlots - 1,
       filledSlots: 1,
     );
 

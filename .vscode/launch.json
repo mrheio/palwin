@@ -1,0 +1,65 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "noctur",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "noctur (profile mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "noctur (release mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "input_validator",
+            "cwd": "packages\\input_validator",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "input_validator (profile mode)",
+            "cwd": "packages\\input_validator",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "input_validator (release mode)",
+            "cwd": "packages\\input_validator",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "styles",
+            "cwd": "packages\\styles",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "styles (profile mode)",
+            "cwd": "packages\\styles",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "styles (release mode)",
+            "cwd": "packages\\styles",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        }
+    ]
+}

@@ -35,7 +35,6 @@ class AuthService {
     try {
       await _auth.signInWithEmailAndPassword(email: email, password: password);
     } on FirebaseAuthException catch (error) {
-      print(error);
       throw AuthException.fromFirebase(error);
     }
   }

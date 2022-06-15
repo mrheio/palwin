@@ -14,6 +14,7 @@ class Players extends StatelessWidget {
   Widget build(BuildContext context) {
     return Wrap(
       spacing: 8,
+      runSpacing: 8,
       children: [
         for (int i = 0; i < filled; i++) const FilledPlayerIcon(),
         for (int i = 0; i < total - filled; i++) const EmptyPlayerIcon(),

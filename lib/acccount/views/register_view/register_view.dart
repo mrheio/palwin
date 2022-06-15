@@ -55,7 +55,7 @@ class RegisterView extends ConsumerWidget {
                     notifier.register();
                   }
                 },
-                child: const StyledText('Intra in cont'),
+                child: const StyledText('Inregistrare'),
               ),
             ],
           ),

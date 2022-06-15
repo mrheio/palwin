@@ -27,10 +27,13 @@ class TeamCard extends ConsumerWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              StyledText(
-                team.name,
-                size: AppFontSize.h3,
-                semibold: true,
+              Expanded(
+                child: StyledText(
+                  team.name,
+                  size: AppFontSize.h3,
+                  semibold: true,
+                  overflow: TextOverflow.ellipsis,
+                ),
               ),
               StyledText(
                 Game.toName(team.gameId),

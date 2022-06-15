@@ -41,7 +41,8 @@ class LoginView extends ConsumerWidget {
                 label: 'Parola',
                 controller: state.passwordController,
                 secret: true,
-                validator: const InputValidator().notEmpty().create(),
+                validator:
+                    const InputValidator().notEmpty().minLength(6).create(),
               ),
               StyledButtonFluid(
                 onPressed: () {

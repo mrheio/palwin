@@ -28,23 +28,25 @@ class GameCard extends ConsumerWidget {
           gap: AppSpacing.l,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            game.icon != null
-                ? Image.file(
-                    game.icon!,
+            game.downloadURL != null
+                ? Image.network(
+                    game.downloadURL!,
                     width: 56,
                     height: 56,
                   )
                 : const Icon(Icons.hide_image_outlined, size: 56),
-            StyledColumn(
-              gap: AppSpacing.xs,
-              children: [
-                StyledText(
-                  game.name,
-                  size: AppFontSize.h3,
-                  semibold: true,
-                ),
-                Players(filled: game.teamSize, total: 0),
-              ],
+            Expanded(
+              child: StyledColumn(
+                gap: AppSpacing.xs,
+                children: [
+                  StyledText(
+                    game.name,
+                    size: AppFontSize.h3,
+                    semibold: true,
+                  ),
+                  Players(filled: game.teamSize, total: 0),
+                ],
+              ),
             )
           ],
         ),

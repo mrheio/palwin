@@ -9,6 +9,7 @@ class Game extends Serializable<Game> {
   final int teamSize;
   final String iconPath;
   final File? icon;
+  final String? downloadURL;
 
   Game({
     String? id,
@@ -16,6 +17,7 @@ class Game extends Serializable<Game> {
     required this.teamSize,
     this.iconPath = '',
     this.icon,
+    this.downloadURL,
     DateTime? createdAt,
   }) : super(id: id ?? name.replaceAll(' ', '_'), createdAt: createdAt);
 
@@ -52,6 +54,7 @@ class Game extends Serializable<Game> {
     int? teamSize,
     String? iconPath,
     File? icon,
+    String? downloadURL,
     DateTime? createdAt,
   }) {
     return Game(
@@ -60,6 +63,7 @@ class Game extends Serializable<Game> {
       teamSize: teamSize ?? this.teamSize,
       iconPath: iconPath ?? this.iconPath,
       icon: icon ?? this.icon,
+      downloadURL: downloadURL ?? this.downloadURL,
       createdAt: createdAt ?? this.createdAt,
     );
   }

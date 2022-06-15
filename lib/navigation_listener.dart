@@ -4,8 +4,7 @@ import 'package:noctur/routing/router.dart';
 
 import 'acccount/providers.dart';
 
-navigationListenerProvider(BuildContext context) =>
-    Provider.autoDispose((ref) async {
+navigationListener(BuildContext context) => Provider.autoDispose((ref) async {
       final user = await ref.watch(userProvider$.future);
 
       if (user.isPresent) {

@@ -30,6 +30,13 @@ class FirebaseStorageService implements StorageService {
   }
 
   @override
+  Future<String> getDownloadURL(String path) async {
+    final fileRef = _rootRef.child(path);
+    final url = await fileRef.getDownloadURL();
+    return url;
+  }
+
+  @override
   Future<void> saveFile(File file, [String? path]) async {
     final filePath = path ?? basename(file.path);
     final fileRef = _rootRef.child(filePath);

@@ -58,7 +58,7 @@ class _SlidablePagesState extends State<SlidablePages>
             onTap: handleTabBarTap,
             indicator: BoxDecoration(
               borderRadius: BorderRadius.circular(8),
-              color: Theme.of(context).colorScheme.primary.withAlpha(75),
+              color: Theme.of(context).colorScheme.primary.withAlpha(40),
             ),
           ),
         ),

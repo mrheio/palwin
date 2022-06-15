@@ -22,7 +22,6 @@ InputDecoration pickFieldStyle(
 }) {
   return InputDecoration(
     filled: true,
-    fillColor: _pickFillColor(context, variant).withAlpha(125),
     border: const OutlineInputBorder(
       borderRadius: BorderRadius.all(
         Radius.circular(12),
