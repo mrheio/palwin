@@ -12,7 +12,6 @@ class EntryPages extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final controller =
         ref.watch(entryPagesProvider.select((value) => value.controller));
-    ref.watch(authEffectProvider(context));
 
     return SafeArea(
       child: SlidablePages(

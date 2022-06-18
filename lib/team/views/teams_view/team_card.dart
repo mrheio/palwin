@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:noctur/acccount/providers.dart';
 import 'package:noctur/common/styles/app_font_size.dart';
 import 'package:noctur/common/widgets/blocks/app_card.dart';
 import 'package:noctur/common/widgets/blocks/players.dart';
@@ -17,6 +19,8 @@ class TeamCard extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final user = ref.watch(authStateProvider).user!;
+
     return AppCard(
       onTap: () => GoRouter.of(context).go('/teams/${team.id}'),
       child: StyledColumn(
@@ -44,7 +48,14 @@ class TeamCard extends ConsumerWidget {
             team.description,
             overflow: TextOverflow.ellipsis,
           ),
-          Players(filled: team.filledSlots, total: team.slots),
+          StyledRow(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(
+                  child: Players(filled: team.filledSlots, total: team.slots)),
+              if (user.isInTeam(team)) const Icon(Icons.grade)
+            ],
+          ),
         ],
       ),
     );

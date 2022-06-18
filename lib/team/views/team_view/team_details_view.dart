@@ -2,8 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:noctur/acccount/providers.dart';
-import 'package:noctur/common/styles/app_font_size.dart';
-import 'package:noctur/common/styles/app_spacing.dart';
+import 'package:noctur/common/styles.dart';
 import 'package:noctur/team/logic/logic.dart';
 import 'package:noctur/team/providers.dart';
 import 'package:noctur/user/logic/logic.dart';
@@ -18,7 +17,7 @@ class TeamDetailsView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final user = ref.watch(authStateProvider.select((value) => value.user))!;
+    final user = ref.watch(authStateProvider).user!;
 
     return Container(
       padding: const EdgeInsets.symmetric(
@@ -48,16 +47,14 @@ class TeamDetailsView extends ConsumerWidget {
             ),
           if (!user.ownsTeam(team) && user.isInTeam(team))
             StyledButtonFluid(
-              onPressed: () => ref
-                  .read(teamsServiceProvider)
-                  .addMember(TeamMember.fromSimpleUser(user), team),
+              onPressed: () =>
+                  ref.read(teamsServiceProvider).deleteMember(user, team),
               child: const Text('Iesi din echipa'),
             ),
           if (!user.isInTeam(team) && !team.isFull)
             StyledButtonFluid(
-              onPressed: () => ref
-                  .read(teamsServiceProvider)
-                  .deleteMember(TeamMember.fromSimpleUser(user), team),
+              onPressed: () =>
+                  ref.read(teamsServiceProvider).addMember(user, team),
               child: const Text('Intra in echipa'),
             ),
         ],

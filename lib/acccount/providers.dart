@@ -32,22 +32,3 @@ final authEffectProvider =
     }
   });
 });
-
-final accountStateProvider =
-    StateNotifierProvider.autoDispose<AccountNotifier, AsyncStatus>((ref) {
-  final user = ref.watch(authStateProvider.select((value) => value.user))!;
-  final usersService = ref.read(usersServiceProvider);
-  return AccountNotifier(user, usersService);
-});
-
-final accountEffectProvider =
-    Provider.family.autoDispose((ref, BuildContext context) {
-  ref.listen<AsyncStatus>(accountStateProvider, (previous, next) {
-    if (next is FailStatus) {
-      StyledSnackbar.fromException(next.error).show(context);
-    }
-    if (next is SuccessStatus) {
-      StyledSnackbar.fromSuccess(next.success).show(context);
-    }
-  });
-});

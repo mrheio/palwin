@@ -3,11 +3,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:input_validator/input_validator.dart';
 import 'package:noctur/common/styles/app_spacing.dart';
 import 'package:noctur/common/utils.dart';
-import 'package:noctur/common/utils/async_state.dart';
 import 'package:noctur/common/widgets/loading.dart';
 import 'package:styles/styles.dart';
 
 import '../../acccount/providers.dart';
+import '../providers.dart';
 
 class ManageAccountView extends ConsumerStatefulWidget {
   const ManageAccountView({Key? key}) : super(key: key);
@@ -52,10 +52,9 @@ class _ManageAccountState extends ConsumerState<ManageAccountView> {
 
   @override
   Widget build(BuildContext context) {
-    final status = ref.watch(authStateProvider.select((value) => value.status));
     final accountState = ref.watch(accountStateProvider);
 
-    if (status is LoadingStatus || accountState is LoadingStatus) {
+    if (accountState is LoadingStatus) {
       return const Loading();
     }
 

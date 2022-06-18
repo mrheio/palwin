@@ -11,7 +11,7 @@ import 'package:rxdart/rxdart.dart';
 
 class TeamsService {
   final BaseRepository<Team> _repository;
-  final BaseRepository<TeamMember> Function(String) _teamUsersRepository;
+  final BaseRepository<SimpleUser> Function(String) _teamUsersRepository;
   final BaseRepository<Message> Function(String) _teamMessagesRepository;
 
   TeamsService(this._repository, this._teamUsersRepository,
@@ -30,7 +30,7 @@ class TeamsService {
       return CombineLatestStream.list(value.map((e) {
         final users$ = _teamUsersRepository(e.id).getAll$();
         return users$.map((event) => e.copyWith(users: event));
-      }));
+      })).defaultIfEmpty([]);
     });
   }
 
@@ -46,7 +46,7 @@ class TeamsService {
       yield* CombineLatestStream.combine2(
         users$,
         messages$,
-        (List<TeamMember> a, List<Message> b) =>
+        (List<SimpleUser> a, List<Message> b) =>
             Optional.of(team.copyWith(users: a, messages: b)),
       );
     });
@@ -76,11 +76,17 @@ class TeamsService {
     if (freeSlots) {
       queryFilter = queryFilter.isGreaterThan(key: 'freeSlots', value: 0);
     }
-    final res = _repository.getWhere$(queryFilter);
+    final res = _repository.getWhere$(queryFilter).switchMap((value) {
+      return CombineLatestStream.list(value.map((e) {
+        final users$ = _teamUsersRepository(e.id).getAll$();
+        return users$.map((event) => e.copyWith(users: event));
+      })).defaultIfEmpty([]);
+    });
     if (containsUser != null) {
       return res.map((event) => event
-        ..where((element) =>
-            element.users.any((element) => element.id == containsUser.id)));
+          .where((element) =>
+              element.users.any((element) => element.id == containsUser.id))
+          .toList());
     }
     return res;
   }
@@ -114,7 +120,7 @@ class TeamsService {
 
     try {
       await _repository.add(team);
-      await _teamUsersRepository(team.id).add(TeamMember.fromSimpleUser(user));
+      await _teamUsersRepository(team.id).add(user);
     } on ResourceAlreadyExists {
       throw TeamAlreadyExists(team);
     }
@@ -132,14 +138,12 @@ class TeamsService {
     }
 
     if (addUser != null) {
-      await _teamUsersRepository(team.id)
-          .add(TeamMember.fromSimpleUser(addUser));
+      await _teamUsersRepository(team.id).add(addUser.toSimpleUser());
     }
 
     if (updateUsers) {
       for (final user in team.users) {
-        await _teamUsersRepository(team.id)
-            .update(TeamMember.fromSimpleUser(user));
+        await _teamUsersRepository(team.id).update(user);
         final userMessagesQuery =
             QueryFilter().equalsTo(key: 'user.id', value: user.id);
         final messagesRes =
@@ -154,11 +158,11 @@ class TeamsService {
     await _repository.update(team);
   }
 
-  Future<void> addMember(TeamMember user, Team team) async {
+  Future<void> addMember(SimpleUser user, Team team) async {
     await updateTeam(team.addUser(user), addUser: user);
   }
 
-  Future<void> deleteMember(TeamMember user, Team team) async {
+  Future<void> deleteMember(SimpleUser user, Team team) async {
     await updateTeam(team.removeUser(user), removeUser: user);
   }
 

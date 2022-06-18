@@ -2,9 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:noctur/acccount/providers.dart';
 import 'package:noctur/common/styles/app_font_size.dart';
-import 'package:noctur/common/utils/async_state.dart';
-import 'package:noctur/common/widgets/loading.dart';
-import 'package:noctur/game/logic/games_notifier.dart';
 import 'package:noctur/game/providers.dart';
 import 'package:noctur/game/views/add_game_view.dart';
 import 'package:noctur/game/views/games_view/games_view.dart';
@@ -15,14 +12,8 @@ class GamesPages extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final authState = ref.watch(authStateProvider);
-    final controller =
-        ref.watch(gamesPagesProvider.select((value) => value.controller));
-    ref.watch(gamesEffectProvider(context));
-
-    if (authState.status is LoadingStatus) {
-      return const Loading();
-    }
+    final user = ref.watch(authStateProvider).user!;
+    final controller = ref.watch(gamesPagesProvider).controller;
 
     return SafeArea(
       child: SlidablePages(
@@ -33,7 +24,7 @@ class GamesPages extends ConsumerWidget {
         ],
         children: [
           const GamesView(),
-          authState.user!.isAdmin
+          user.isAdmin
               ? const AddGameView()
               : Container(
                   color: Colors.black.withAlpha(200),

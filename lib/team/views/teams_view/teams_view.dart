@@ -11,11 +11,24 @@ import 'package:styles/styles.dart';
 import '../../../game/logic/game.dart';
 import 'team_card.dart';
 
-class TeamsView extends ConsumerWidget {
+class TeamsView extends ConsumerStatefulWidget {
   const TeamsView({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<ConsumerStatefulWidget> createState() {
+    return _TeamsViewState();
+  }
+}
+
+class _TeamsViewState extends ConsumerState<TeamsView> {
+  @override
+  void initState() {
+    super.initState();
+    Future.microtask(() => ref.read(teamsStateProvider.notifier).getTeams());
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final teamsState = ref.watch(teamsStateProvider);
     final status = teamsState.status;
     final teams = teamsState.teams;

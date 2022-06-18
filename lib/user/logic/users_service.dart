@@ -67,8 +67,7 @@ class UsersService {
     await _repository.update(user);
     final teams = await _teamsService.getTeamsWithUserIn(user);
     for (final team in teams) {
-      await _teamsService.updateTeam(
-          team.updateUser(TeamMember.fromSimpleUser(user)),
+      await _teamsService.updateTeam(team.updateUser(user.toSimpleUser()),
           updateUsers: true);
     }
   }

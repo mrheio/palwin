@@ -8,14 +8,13 @@ import '../game/views/games_pages.dart';
 import '../team/views/teams_pages.dart';
 
 final entryRoute = GoRoute(
-  path: 'entry',
+  path: '/entry',
   pageBuilder: (context, state) => const NoTransitionPage(child: EntryPages()),
 );
 
 final homeRoute = GoRoute(
   path: '/',
   pageBuilder: (context, state) => const NoTransitionPage(child: HomeView()),
-  routes: [entryRoute],
 );
 
 final teamsRoute = GoRoute(

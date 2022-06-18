@@ -22,16 +22,16 @@ class Navbar extends StatefulWidget {
 class _NavbarState extends State<Navbar> {
   void _handleTap(int index) {
     if (index == 0) {
-      GoRouter.of(context).push(homeRoute.path);
+      GoRouter.of(context).go(homeRoute.path);
     }
     if (index == 1) {
-      GoRouter.of(context).push(teamsRoute.path);
+      GoRouter.of(context).go(teamsRoute.path);
     }
     if (index == 2) {
-      GoRouter.of(context).push(gamesRoute.path);
+      GoRouter.of(context).go(gamesRoute.path);
     }
     if (index == 3) {
-      GoRouter.of(context).push(accountRoute.path);
+      GoRouter.of(context).go(accountRoute.path);
     }
   }
 

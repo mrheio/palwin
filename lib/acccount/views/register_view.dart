@@ -42,7 +42,7 @@ class _RegisterState extends ConsumerState<RegisterView> {
 
   @override
   Widget build(BuildContext context) {
-    final status = ref.watch(authStateProvider.select((value) => value.status));
+    final status = ref.watch(authStateProvider).status;
 
     if (status is LoadingStatus) {
       return const Loading();

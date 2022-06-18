@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:noctur/team/logic/logic.dart';
+import 'package:noctur/user/logic/logic.dart';
 
 import '../../../common/database.dart';
 
@@ -11,7 +12,7 @@ class Team extends Serializable<Team> {
   final int slots;
   final int freeSlots;
   final int filledSlots;
-  final List<TeamMember> users;
+  final List<SimpleUser> users;
   final List<Message> messages;
 
   Team({
@@ -86,7 +87,7 @@ class Team extends Serializable<Team> {
     int? slots,
     int? freeSlots,
     int? filledSlots,
-    List<TeamMember>? users,
+    List<SimpleUser>? users,
     List<Message>? messages,
     DateTime? createdAt,
   }) {
@@ -107,18 +108,18 @@ class Team extends Serializable<Team> {
 
   bool get isFull => freeSlots == 0;
 
-  Team addUser(TeamMember user) => copyWith(
+  Team addUser(SimpleUser user) => copyWith(
         freeSlots: freeSlots - 1,
         filledSlots: filledSlots + 1,
         users: [...users, user],
       );
 
-  Team removeUser(TeamMember user) => copyWith(
+  Team removeUser(SimpleUser user) => copyWith(
         freeSlots: freeSlots + 1,
         filledSlots: filledSlots - 1,
         users: users..removeWhere((element) => element.id == user.id),
       );
 
-  Team updateUser(TeamMember user) => copyWith(
+  Team updateUser(SimpleUser user) => copyWith(
       users: [...users..removeWhere((element) => element.id == user.id), user]);
 }

@@ -5,6 +5,7 @@ import 'package:noctur/common/utils.dart';
 import 'package:noctur/team/logic/logic.dart';
 
 import '../game/logic/game.dart';
+import '../user/logic/simple_user.dart';
 
 final teamsRepositoryProvider = Provider((ref) {
   return ref.read(firestoreRepositoryFactoryProvider).getRepository<Team>();
@@ -14,7 +15,7 @@ final teamUsersRepositoryProvider = Provider.family((ref, String teamId) {
   return ref
       .read(firestoreRepositoryFactoryProvider)
       .fromDocument<Team>(teamId)
-      .getRepository<TeamMember>();
+      .getRepository<SimpleUser>();
 });
 
 final teamMessagesRepositoryProvider = Provider.family((ref, String teamId) {
@@ -44,6 +45,9 @@ final freeSlotsProvider = StateProvider.autoDispose<bool>((ref) {
   ref.maintainState = true;
   return false;
 });
+
+final containsUserProvider =
+    StateProvider.autoDispose<SimpleUser?>((ref) => null);
 
 final teamsStateProvider =
     StateNotifierProvider.autoDispose<TeamsNotifier, TeamsState>((ref) {

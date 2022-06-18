@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:noctur/acccount/providers.dart';
 import 'package:noctur/common/styles/app_font_size.dart';
 import 'package:noctur/common/styles/app_spacing.dart';
 import 'package:noctur/common/widgets/widgets.dart';
@@ -15,28 +16,32 @@ class GameCard extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final user = ref.watch(authStateProvider).user!;
+
     return GestureDetector(
       key: Key(game.id),
-      onLongPress: () => showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-          title: Text(game.name),
-          content: const Text('Stergi jocul?'),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: const Text('NU'),
-            ),
-            TextButton(
-              onPressed: () {
-                ref.read(gamesStateProvider.notifier).deleteGame(game);
-                Navigator.of(context).pop();
-              },
-              child: const Text('DA'),
-            ),
-          ],
-        ),
-      ),
+      onLongPress: !user.isAdmin
+          ? null
+          : () => showDialog(
+                context: context,
+                builder: (context) => AlertDialog(
+                  title: Text(game.name),
+                  content: const Text('Stergi jocul?'),
+                  actions: [
+                    TextButton(
+                      onPressed: () => Navigator.of(context).pop(),
+                      child: const Text('NU'),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        ref.read(gamesStateProvider.notifier).deleteGame(game);
+                        Navigator.of(context).pop();
+                      },
+                      child: const Text('DA'),
+                    ),
+                  ],
+                ),
+              ),
       child: AppCard(
         onTap: () {},
         child: StyledRow(

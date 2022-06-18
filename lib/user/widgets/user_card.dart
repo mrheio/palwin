@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:noctur/acccount/providers.dart';
 import 'package:noctur/team/providers.dart';
@@ -24,10 +23,6 @@ class UserCard extends ConsumerWidget {
         ref.watch(authStateProvider.select((value) => value.user))!;
 
     return AppCard(
-      onTap: () => showDialog(
-        context: context,
-        builder: (context) => _UserTeamsDialog(user),
-      ),
       child: StyledRow(
         gap: AppSpacing.s,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -47,19 +42,6 @@ class UserCard extends ConsumerWidget {
               ],
             ),
           ),
-          loggedUser.isFriendWith(user)
-              ? IconButton(
-                  onPressed: () => ref
-                      .read(accountStateProvider.notifier)
-                      .deleteFriend(user),
-                  icon: const Icon(Icons.person_remove),
-                )
-              : IconButton(
-                  onPressed: () => ref
-                      .read(accountStateProvider.notifier)
-                      .addFriend(Friend.fromSimpleUser(user)),
-                  icon: const Icon(Icons.person_add),
-                ),
         ],
       ),
     );

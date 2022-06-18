@@ -10,9 +10,7 @@ class TeamsPages extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final controller =
-        ref.watch(teamsPagesProvider.select((value) => value.controller));
-    ref.watch(teamsEffectProvider(context));
+    final controller = ref.watch(teamsPagesProvider).controller;
 
     return SafeArea(
       child: SlidablePages(

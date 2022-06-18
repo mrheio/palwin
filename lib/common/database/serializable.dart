@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:noctur/game/logic/logic.dart';
 import 'package:noctur/team/logic/logic.dart';
-import 'package:noctur/team/logic/message.dart';
 import 'package:noctur/user/logic/logic.dart';
 
 abstract class Serializable<T> extends Equatable {
@@ -26,8 +25,6 @@ abstract class Serializable<T> extends Equatable {
           return SimpleUser.fromDocument(payload) as G;
         case ComplexUser:
           return ComplexUser.fromDocument(payload) as G;
-        case Friend:
-          return Friend.fromDocument(payload) as G;
         case Game:
           return Game.fromDocument(payload) as G;
         case Team:

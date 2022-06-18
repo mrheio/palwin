@@ -13,7 +13,7 @@ class FriendsView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final user = ref.watch(authStateProvider.select((value) => value.user))!;
+    final user = ref.watch(authStateProvider).user!;
 
     return user.friends.isEmpty
         ? Container(

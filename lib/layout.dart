@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:noctur/game/providers.dart';
 import 'package:noctur/navigation_listener.dart';
 import 'package:noctur/routing/routes.dart';
+import 'package:noctur/team/providers.dart';
+import 'package:noctur/user/providers.dart';
 
 import 'acccount/providers.dart';
 import 'navbar.dart';
@@ -29,6 +32,18 @@ class _LayoutState extends ConsumerState<Layout> {
   Widget build(BuildContext context) {
     final authState = ref.watch(authStateProvider);
     ref.watch(navigationListener(context));
+
+    if (GoRouter.of(context).location == entryRoute.path) {
+      ref.watch(authEffectProvider(context));
+    }
+
+    if (GoRouter.of(context).location == teamsRoute.path) {
+      ref.watch(teamsEffectProvider(context));
+    }
+
+    if (GoRouter.of(context).location == gamesRoute.path) {
+      ref.watch(gamesEffectProvider(context));
+    }
 
     if (GoRouter.of(context).location == accountRoute.path) {
       ref.watch(accountEffectProvider(context));

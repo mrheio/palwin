@@ -50,7 +50,7 @@ class _AddTeamState extends ConsumerState<AddTeamView> {
             slots: getText(slotsController),
             description: getText(descriptionController),
             game: game!,
-            user: user,
+            user: user.toSimpleUser(),
           );
     }
   }
@@ -58,7 +58,7 @@ class _AddTeamState extends ConsumerState<AddTeamView> {
   @override
   Widget build(BuildContext context) {
     final gamesState = ref.watch(gamesStateProvider);
-    final status = ref.watch(teamsStateProvider);
+    final status = ref.watch(teamsStateProvider).status;
 
     if (status is LoadingStatus || gamesState.status is LoadingStatus) {
       return const Loading();
