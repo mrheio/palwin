@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:noctur/common/styles.dart';
-import 'package:noctur/common/utils.dart';
-import 'package:noctur/common/widgets/loading.dart';
-import 'package:noctur/game/providers.dart';
-import 'package:noctur/team/logic/logic.dart';
-import 'package:noctur/team/providers.dart';
+import 'package:palwin/common/styles.dart';
+import 'package:palwin/common/utils.dart';
+import 'package:palwin/common/widgets/loading.dart';
+import 'package:palwin/game/providers.dart';
+import 'package:palwin/team/logic/logic.dart';
+import 'package:palwin/team/providers.dart';
 import 'package:styles/styles.dart';
 
 import '../../../game/logic/game.dart';

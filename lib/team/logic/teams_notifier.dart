@@ -1,11 +1,11 @@
 import 'dart:async';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:noctur/common/exceptions.dart';
-import 'package:noctur/common/utils.dart';
-import 'package:noctur/team/logic/team.dart';
-import 'package:noctur/team/logic/teams_service.dart';
-import 'package:noctur/user/logic/logic.dart';
+import 'package:palwin/common/exceptions.dart';
+import 'package:palwin/common/utils.dart';
+import 'package:palwin/team/logic/team.dart';
+import 'package:palwin/team/logic/teams_service.dart';
+import 'package:palwin/user/logic/logic.dart';
 
 import '../../game/logic/logic.dart';
 

@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:noctur/game/providers.dart';
-import 'package:noctur/navigation_listener.dart';
-import 'package:noctur/routing/routes.dart';
-import 'package:noctur/team/providers.dart';
-import 'package:noctur/user/providers.dart';
+import 'package:palwin/game/providers.dart';
+import 'package:palwin/navigation_listener.dart';
+import 'package:palwin/routing/routes.dart';
+import 'package:palwin/team/providers.dart';
+import 'package:palwin/user/providers.dart';
 
 import 'acccount/providers.dart';
 import 'navbar.dart';

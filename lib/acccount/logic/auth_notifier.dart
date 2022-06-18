@@ -1,10 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:noctur/acccount/logic/auth_service.dart';
-import 'package:noctur/common/utils.dart';
-import 'package:noctur/user/logic/logic.dart';
 import 'package:optional/optional.dart';
+import 'package:palwin/acccount/logic/auth_service.dart';
+import 'package:palwin/common/utils.dart';
+import 'package:palwin/user/logic/logic.dart';
 
 import '../../common/exceptions/auth_exception.dart';
 

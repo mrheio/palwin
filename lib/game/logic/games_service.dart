@@ -1,10 +1,10 @@
 import 'dart:io';
 
-import 'package:noctur/common/database.dart';
-import 'package:noctur/common/exceptions.dart';
-import 'package:noctur/common/storage.dart';
-import 'package:noctur/game/logic/game.dart';
-import 'package:noctur/team/logic/teams_service.dart';
+import 'package:palwin/common/database.dart';
+import 'package:palwin/common/exceptions.dart';
+import 'package:palwin/common/storage.dart';
+import 'package:palwin/game/logic/game.dart';
+import 'package:palwin/team/logic/teams_service.dart';
 import 'package:path/path.dart';
 
 class GamesService {

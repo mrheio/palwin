@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:noctur/acccount/providers.dart';
-import 'package:noctur/common/styles/app_font_size.dart';
-import 'package:noctur/game/providers.dart';
-import 'package:noctur/game/views/add_game_view.dart';
-import 'package:noctur/game/views/games_view/games_view.dart';
+import 'package:palwin/acccount/providers.dart';
+import 'package:palwin/common/styles/app_font_size.dart';
+import 'package:palwin/game/providers.dart';
+import 'package:palwin/game/views/add_game_view.dart';
+import 'package:palwin/game/views/games_view/games_view.dart';
 import 'package:styles/styles.dart';
 
 class GamesPages extends ConsumerWidget {

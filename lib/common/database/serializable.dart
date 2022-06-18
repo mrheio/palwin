@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
-import 'package:noctur/game/logic/logic.dart';
-import 'package:noctur/team/logic/logic.dart';
-import 'package:noctur/user/logic/logic.dart';
+import 'package:palwin/game/logic/logic.dart';
+import 'package:palwin/team/logic/logic.dart';
+import 'package:palwin/user/logic/logic.dart';
 
 abstract class Serializable<T> extends Equatable {
   final String id;

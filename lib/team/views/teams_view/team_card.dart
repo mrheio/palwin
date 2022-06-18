@@ -2,12 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:noctur/acccount/providers.dart';
-import 'package:noctur/common/styles/app_font_size.dart';
-import 'package:noctur/common/widgets/blocks/app_card.dart';
-import 'package:noctur/common/widgets/blocks/players.dart';
-import 'package:noctur/game/logic/game.dart';
-import 'package:noctur/team/logic/logic.dart';
+import 'package:palwin/acccount/providers.dart';
+import 'package:palwin/common/styles/app_font_size.dart';
+import 'package:palwin/common/widgets/blocks/app_card.dart';
+import 'package:palwin/common/widgets/blocks/players.dart';
+import 'package:palwin/game/logic/game.dart';
+import 'package:palwin/team/logic/logic.dart';
 import 'package:styles/styles.dart';
 
 import '../../../common/styles/app_spacing.dart';

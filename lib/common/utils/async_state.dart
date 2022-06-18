@@ -1,5 +1,5 @@
-import 'package:noctur/common/exceptions/custom_exception.dart';
-import 'package:noctur/common/success.dart';
+import 'package:palwin/common/exceptions/custom_exception.dart';
+import 'package:palwin/common/success.dart';
 
 abstract class AsyncStatus {
   const AsyncStatus();

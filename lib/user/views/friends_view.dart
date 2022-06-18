@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:noctur/acccount/providers.dart';
-import 'package:noctur/common/styles/app_font_size.dart';
-import 'package:noctur/user/logic/logic.dart';
+import 'package:palwin/acccount/providers.dart';
+import 'package:palwin/common/styles/app_font_size.dart';
+import 'package:palwin/user/logic/logic.dart';
 import 'package:styles/styles.dart';
 
 import '../../common/styles.dart';

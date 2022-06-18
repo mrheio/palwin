@@ -1,7 +1,7 @@
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:noctur/common/styles/app_color.dart';
+import 'package:palwin/common/styles/app_color.dart';
 
 const _darkTextTheme = TextTheme(
   headline1: TextStyle(color: AppColor.text),

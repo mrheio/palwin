@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:noctur/common/styles/app_color.dart';
+import 'package:palwin/common/styles/app_color.dart';
 
 import '../../styles/app_spacing.dart';
 

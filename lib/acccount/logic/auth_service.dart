@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:noctur/common/exceptions.dart';
-import 'package:noctur/user/logic/logic.dart';
 import 'package:optional/optional.dart';
+import 'package:palwin/common/exceptions.dart';
+import 'package:palwin/user/logic/logic.dart';
 import 'package:rxdart/rxdart.dart';
 
 class AuthService {

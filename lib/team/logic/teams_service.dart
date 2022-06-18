@@ -1,12 +1,12 @@
-import 'package:noctur/common/database.dart';
-import 'package:noctur/common/exceptions.dart';
-import 'package:noctur/game/logic/game.dart';
-import 'package:noctur/team/logic/logic.dart';
-import 'package:noctur/team/logic/message.dart';
-import 'package:noctur/team/logic/team.dart';
-import 'package:noctur/user/logic/logic.dart';
-import 'package:noctur/user/logic/simple_user.dart';
 import 'package:optional/optional.dart';
+import 'package:palwin/common/database.dart';
+import 'package:palwin/common/exceptions.dart';
+import 'package:palwin/game/logic/game.dart';
+import 'package:palwin/team/logic/logic.dart';
+import 'package:palwin/team/logic/message.dart';
+import 'package:palwin/team/logic/team.dart';
+import 'package:palwin/user/logic/logic.dart';
+import 'package:palwin/user/logic/simple_user.dart';
 import 'package:rxdart/rxdart.dart';
 
 class TeamsService {

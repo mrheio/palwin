@@ -1,9 +1,9 @@
-import 'package:noctur/common/database/base_repository.dart';
-import 'package:noctur/common/database/query_helpers.dart';
-import 'package:noctur/common/exceptions/others.dart';
-import 'package:noctur/team/logic/logic.dart';
-import 'package:noctur/user/logic/simple_user.dart';
 import 'package:optional/optional.dart';
+import 'package:palwin/common/database/base_repository.dart';
+import 'package:palwin/common/database/query_helpers.dart';
+import 'package:palwin/common/exceptions/others.dart';
+import 'package:palwin/team/logic/logic.dart';
+import 'package:palwin/user/logic/simple_user.dart';
 import 'package:rxdart/rxdart.dart';
 
 import 'complex_user.dart';

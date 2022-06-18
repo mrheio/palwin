@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:noctur/acccount/providers.dart';
-import 'package:noctur/team/providers.dart';
-import 'package:noctur/team/views/teams_view/team_card.dart';
+import 'package:palwin/acccount/providers.dart';
+import 'package:palwin/team/providers.dart';
+import 'package:palwin/team/views/teams_view/team_card.dart';
 import 'package:styles/styles.dart';
 
 import '../../common/styles.dart';

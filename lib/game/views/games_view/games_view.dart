@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:noctur/common/styles/app_font_size.dart';
-import 'package:noctur/common/styles/app_spacing.dart';
-import 'package:noctur/common/utils/async_state.dart';
-import 'package:noctur/game/logic/game.dart';
-import 'package:noctur/game/providers.dart';
+import 'package:palwin/common/styles/app_font_size.dart';
+import 'package:palwin/common/styles/app_spacing.dart';
+import 'package:palwin/common/utils/async_state.dart';
+import 'package:palwin/game/logic/game.dart';
+import 'package:palwin/game/providers.dart';
 import 'package:styles/styles.dart';
 
 import '../../../common/widgets/loading.dart';

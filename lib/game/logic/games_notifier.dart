@@ -2,11 +2,11 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:noctur/common/exceptions.dart';
-import 'package:noctur/common/success.dart';
-import 'package:noctur/common/utils.dart';
-import 'package:noctur/game/logic/game.dart';
-import 'package:noctur/game/logic/games_service.dart';
+import 'package:palwin/common/exceptions.dart';
+import 'package:palwin/common/success.dart';
+import 'package:palwin/common/utils.dart';
+import 'package:palwin/game/logic/game.dart';
+import 'package:palwin/game/logic/games_service.dart';
 
 class AddGameSuccess extends SuccessStatus {
   const AddGameSuccess();

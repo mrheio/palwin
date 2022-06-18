@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:noctur/acccount/providers.dart';
-import 'package:noctur/common/styles/app_font_size.dart';
-import 'package:noctur/common/styles/app_spacing.dart';
-import 'package:noctur/common/utils/ui_utils.dart';
-import 'package:noctur/team/logic/logic.dart';
-import 'package:noctur/team/providers.dart';
+import 'package:palwin/acccount/providers.dart';
+import 'package:palwin/common/styles/app_font_size.dart';
+import 'package:palwin/common/styles/app_spacing.dart';
+import 'package:palwin/common/utils/ui_utils.dart';
+import 'package:palwin/team/logic/logic.dart';
+import 'package:palwin/team/providers.dart';
 import 'package:styles/styles.dart';
 
 class ChatView extends ConsumerWidget {

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:noctur/routing/router.dart';
+import 'package:palwin/routing/router.dart';
 
 import 'acccount/providers.dart';
 

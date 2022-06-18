@@ -1,7 +1,7 @@
 import 'package:go_router/go_router.dart';
-import 'package:noctur/home/home_view.dart';
-import 'package:noctur/team/views/team_view/team_view.dart';
-import 'package:noctur/user/views/account_pages.dart';
+import 'package:palwin/home/home_view.dart';
+import 'package:palwin/team/views/team_view/team_view.dart';
+import 'package:palwin/user/views/account_pages.dart';
 
 import '../acccount/views/entry_pages.dart';
 import '../game/views/games_pages.dart';

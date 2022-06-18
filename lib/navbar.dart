@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:noctur/routing/routes.dart';
+import 'package:palwin/routing/routes.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 
 import 'common/styles/app_color.dart';

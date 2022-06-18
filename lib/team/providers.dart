@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:noctur/common/providers.dart';
-import 'package:noctur/common/utils.dart';
-import 'package:noctur/team/logic/logic.dart';
+import 'package:palwin/common/providers.dart';
+import 'package:palwin/common/utils.dart';
+import 'package:palwin/team/logic/logic.dart';
 
 import '../game/logic/game.dart';
 import '../user/logic/simple_user.dart';

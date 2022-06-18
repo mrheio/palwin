@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:noctur/acccount/providers.dart';
-import 'package:noctur/common/utils/async_state.dart';
-import 'package:noctur/common/widgets/loading.dart';
-import 'package:noctur/team/providers.dart';
+import 'package:palwin/acccount/providers.dart';
+import 'package:palwin/common/utils/async_state.dart';
+import 'package:palwin/common/widgets/loading.dart';
+import 'package:palwin/team/providers.dart';
 import 'package:styles/styles.dart';
 import 'package:super_rich_text/super_rich_text.dart';
 

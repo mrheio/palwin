@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:noctur/common/database.dart';
-import 'package:noctur/user/logic/logic.dart';
+import 'package:palwin/common/database.dart';
+import 'package:palwin/user/logic/logic.dart';
 
 class Message extends Serializable<Message> {
   final String text;

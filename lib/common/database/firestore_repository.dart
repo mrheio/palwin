@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:noctur/common/database/base_repository.dart';
-import 'package:noctur/common/database/query_helpers.dart';
-import 'package:noctur/common/database/serializable.dart';
-import 'package:noctur/common/exceptions/resource_already_exists.dart';
 import 'package:optional/optional.dart';
+import 'package:palwin/common/database/base_repository.dart';
+import 'package:palwin/common/database/query_helpers.dart';
+import 'package:palwin/common/database/serializable.dart';
+import 'package:palwin/common/exceptions/resource_already_exists.dart';
 
 class FirestoreRepository<T extends Serializable> implements BaseRepository<T> {
   final CollectionReference _collection;

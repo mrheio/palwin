@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:noctur/common/providers.dart';
-import 'package:noctur/team/providers.dart';
-import 'package:noctur/user/logic/logic.dart';
+import 'package:palwin/common/providers.dart';
+import 'package:palwin/team/providers.dart';
+import 'package:palwin/user/logic/logic.dart';
 
 import '../acccount/providers.dart';
 import '../common/utils.dart';

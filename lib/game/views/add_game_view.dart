@@ -5,9 +5,9 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:input_validator/input_validator.dart';
-import 'package:noctur/common/styles/app_spacing.dart';
-import 'package:noctur/common/utils.dart';
-import 'package:noctur/common/widgets/loading.dart';
+import 'package:palwin/common/styles/app_spacing.dart';
+import 'package:palwin/common/utils.dart';
+import 'package:palwin/common/widgets/loading.dart';
 import 'package:styles/styles.dart';
 
 import '../providers.dart';

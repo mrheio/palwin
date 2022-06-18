@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:noctur/team/logic/logic.dart';
+import 'package:palwin/team/logic/logic.dart';
 
 import '../../common/database.dart';
 
