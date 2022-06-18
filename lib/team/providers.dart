@@ -1,12 +1,8 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:noctur/acccount/providers.dart';
-import 'package:noctur/common/database/query_helpers.dart';
 import 'package:noctur/common/providers.dart';
-import 'package:noctur/common/utils/pages_controller.dart';
+import 'package:noctur/common/utils.dart';
 import 'package:noctur/team/logic/logic.dart';
-import 'package:noctur/team/logic/message.dart';
-import 'package:noctur/team/logic/teams_service.dart';
-import 'package:noctur/user/logic/logic.dart';
 
 import '../game/logic/game.dart';
 
@@ -18,7 +14,7 @@ final teamUsersRepositoryProvider = Provider.family((ref, String teamId) {
   return ref
       .read(firestoreRepositoryFactoryProvider)
       .fromDocument<Team>(teamId)
-      .getRepository<SimpleUser>();
+      .getRepository<TeamMember>();
 });
 
 final teamMessagesRepositoryProvider = Provider.family((ref, String teamId) {
@@ -34,18 +30,10 @@ final teamsServiceProvider = Provider((ref) {
       ref.read(teamUsersRepositoryProvider(teamId));
   teamMessagesRepository(String teamId) =>
       ref.read(teamMessagesRepositoryProvider(teamId));
-  final authService = ref.read(authServiceProvider);
-  return TeamsService(
-      repository, teamUsersRepository, teamMessagesRepository, authService);
+  return TeamsService(repository, teamUsersRepository, teamMessagesRepository);
 });
 
-final teamsPagesProvider = Provider.autoDispose((ref) {
-  final state = PagesState();
-  ref.onDispose(() {
-    state.dispose();
-  });
-  return state;
-});
+final teamsPagesProvider = createPagesStateProvider();
 
 final gameFilterProvider = StateProvider.autoDispose<Game?>((ref) {
   ref.maintainState = true;
@@ -57,33 +45,28 @@ final freeSlotsProvider = StateProvider.autoDispose<bool>((ref) {
   return false;
 });
 
-final teamsProvider$ = StreamProvider.autoDispose((ref) {
-  final gameFilter = ref.watch(gameFilterProvider);
+final teamsStateProvider =
+    StateNotifierProvider.autoDispose<TeamsNotifier, TeamsState>((ref) {
+  final teamsService = ref.read(teamsServiceProvider);
+  final game = ref.watch(gameFilterProvider);
   final freeSlots = ref.watch(freeSlotsProvider);
+  return TeamsNotifier(teamsService)
+    ..getTeams(game: game, freeSlots: freeSlots);
+});
 
-  var queryFilter = QueryFilter();
-  if (gameFilter != null) {
-    queryFilter = queryFilter.equalsTo(key: 'gameId', value: gameFilter.id);
-  }
-  if (freeSlots) {
-    queryFilter = queryFilter.isGreaterThan(key: 'freeSlots', value: 0);
-  }
-
-  return ref.read(teamsRepositoryProvider).getWhere$(queryFilter);
+final teamsEffectProvider =
+    Provider.family.autoDispose((ref, BuildContext context) {
+  ref.listen<TeamsState>(teamsStateProvider, (previous, next) {
+    final status = next.status;
+    if (status is FailStatus) {
+      StyledSnackbar.fromException(status.error).show(context);
+    }
+    if (status is AddTeamSuccess) {
+      ref.read(teamsPagesProvider).toInitPage();
+    }
+  });
 });
 
 final teamProvider$ = StreamProvider.family.autoDispose((ref, String id) {
   return ref.read(teamsServiceProvider).getById$(id);
-});
-
-final teamMessagesProvider$ = StreamProvider.family
-    .autoDispose<List<Message>, String>((ref, teamId) async* {
-  final team = await ref.watch(teamProvider$(teamId).future);
-  if (!team.isPresent) {
-    yield <Message>[];
-    return;
-  }
-  yield* ref
-      .read(teamMessagesRepositoryProvider(team.value.id))
-      .getWhere$(QueryFilter().orderDesc('createdAt'));
 });

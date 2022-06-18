@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import '../../common/database/serializable.dart';
+import '../../common/database.dart';
 
 class Game extends Serializable<Game> {
   final String name;
@@ -46,6 +46,9 @@ class Game extends Serializable<Game> {
       'createdAt': createdAt.millisecondsSinceEpoch,
     };
   }
+
+  @override
+  List<Object?> get props => [id, name, teamSize, iconPath, icon, downloadURL];
 
   @override
   Game copyWith({

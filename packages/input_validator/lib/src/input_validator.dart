@@ -2,6 +2,7 @@ typedef ValidatorHandler<T> = String? Function(T? val);
 
 final _emailRegexp = RegExp(
     r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$");
+final _uppercaseRegexp = RegExp(r'[A-Z]');
 
 class InputValidator<T> {
   final List<ValidatorHandler<T>> validators;
@@ -74,6 +75,18 @@ class InputValidator<T> {
         }
         if (number < minValue) {
           return message.isNotEmpty ? message : 'Cel putin $minValue';
+        }
+      }
+      return null;
+    });
+  }
+
+  InputValidator<T> hasUppercase(
+      [String message = 'Trebuie sa contina cel putin o majuscula']) {
+    return _addValidator((val) {
+      if (val is String) {
+        if (!_uppercaseRegexp.hasMatch(val)) {
+          return message;
         }
       }
       return null;

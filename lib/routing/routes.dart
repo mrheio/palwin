@@ -18,7 +18,7 @@ final homeRoute = GoRoute(
   routes: [entryRoute],
 );
 
-final teamsViewRoute = GoRoute(
+final teamsRoute = GoRoute(
   path: '/teams',
   pageBuilder: (context, state) => const NoTransitionPage(child: TeamsPages()),
   routes: [
@@ -32,7 +32,7 @@ final teamsViewRoute = GoRoute(
   ],
 );
 
-final gamesViewRoute = GoRoute(
+final gamesRoute = GoRoute(
   path: '/games',
   pageBuilder: (context, state) => const NoTransitionPage(child: GamesPages()),
 );

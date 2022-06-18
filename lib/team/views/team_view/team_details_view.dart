@@ -4,11 +4,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:noctur/acccount/providers.dart';
 import 'package:noctur/common/styles/app_font_size.dart';
 import 'package:noctur/common/styles/app_spacing.dart';
-import 'package:noctur/common/widgets/blocks/app_card.dart';
 import 'package:noctur/team/logic/logic.dart';
 import 'package:noctur/team/providers.dart';
 import 'package:noctur/user/logic/logic.dart';
 import 'package:styles/styles.dart';
+
+import '../../../user/widgets/user_card.dart';
 
 class TeamDetailsView extends ConsumerWidget {
   final Team team;
@@ -17,7 +18,7 @@ class TeamDetailsView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final user = ref.watch(userProvider$).value!.value;
+    final user = ref.watch(authStateProvider.select((value) => value.user))!;
 
     return Container(
       padding: const EdgeInsets.symmetric(
@@ -37,7 +38,7 @@ class TeamDetailsView extends ConsumerWidget {
             child: StyledList<SimpleUser>(
               items: team.users,
               gap: AppSpacing.s,
-              displayBuilder: (user) => _UserCard(team, user),
+              displayBuilder: (user) => UserCard(team, user),
             ),
           ),
           if (user.ownsTeam(team))
@@ -47,39 +48,18 @@ class TeamDetailsView extends ConsumerWidget {
             ),
           if (!user.ownsTeam(team) && user.isInTeam(team))
             StyledButtonFluid(
-              onPressed: () => ref.read(teamsServiceProvider).quitTeam(team),
+              onPressed: () => ref
+                  .read(teamsServiceProvider)
+                  .addMember(TeamMember.fromSimpleUser(user), team),
               child: const Text('Iesi din echipa'),
             ),
           if (!user.isInTeam(team) && !team.isFull)
             StyledButtonFluid(
-              onPressed: () => ref.read(teamsServiceProvider).joinTeam(team),
+              onPressed: () => ref
+                  .read(teamsServiceProvider)
+                  .deleteMember(TeamMember.fromSimpleUser(user), team),
               child: const Text('Intra in echipa'),
             ),
-        ],
-      ),
-    );
-  }
-}
-
-class _UserCard extends ConsumerWidget {
-  final Team team;
-  final SimpleUser user;
-
-  const _UserCard(this.team, this.user);
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return AppCard(
-      child: StyledRow(
-        gap: AppSpacing.s,
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          if (team.uid == user.id) const Icon(Icons.diamond),
-          StyledText(
-            user.username,
-            size: AppFontSize.h4,
-          ),
         ],
       ),
     );

@@ -4,7 +4,9 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:noctur/common/styles/app_font_size.dart';
 import 'package:noctur/common/styles/app_spacing.dart';
+import 'package:noctur/common/utils/async_state.dart';
 import 'package:noctur/game/logic/game.dart';
+import 'package:noctur/game/logic/games_notifier.dart';
 import 'package:noctur/game/providers.dart';
 import 'package:styles/styles.dart';
 
@@ -16,18 +18,19 @@ class GamesView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final state = ref.watch(gamesProvider$);
+    final gamesState = ref.watch(gamesStateProvider);
 
-    return state.maybeWhen(
-      orElse: () => const Loading(),
-      data: (games) => StyledColumn(
-        children: [
-          _GameSearch(),
-          Expanded(
-            child: _GamesList(games),
-          ),
-        ],
-      ),
+    if (gamesState.status is LoadingStatus) {
+      return const Loading();
+    }
+
+    return StyledColumn(
+      children: [
+        _GameSearch(),
+        Expanded(
+          child: _GamesList(gamesState.games),
+        ),
+      ],
     );
   }
 }

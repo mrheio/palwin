@@ -1,42 +1,41 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
-import 'package:noctur/acccount/providers.dart';
-import 'package:noctur/common/styles/app_font_size.dart';
-import 'package:noctur/common/styles/app_spacing.dart';
+import 'package:noctur/common/styles.dart';
+import 'package:noctur/common/utils.dart';
 import 'package:noctur/common/widgets/loading.dart';
 import 'package:noctur/team/providers.dart';
-import 'package:noctur/user/logic/logic.dart';
 import 'package:styles/styles.dart';
 import 'package:super_rich_text/super_rich_text.dart';
 
+import '../acccount/providers.dart';
 import '../team/logic/team.dart';
 import '../team/views/teams_view/team_card.dart';
+import '../user/logic/complex_user.dart';
 
 class HomeView extends ConsumerWidget {
   const HomeView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final user = ref.watch(userProvider$).value;
+    final authState = ref.watch(authStateProvider);
 
-    if (user == null) {
+    if (authState.status is LoadingStatus) {
       return const Loading();
     }
 
-    if (user.isPresent) {
-      return _MainView(user.value);
+    if (authState.hasUser) {
+      return _MainView(authState.user!);
     }
 
     return _WelcomeView();
   }
 }
 
-final userTeamsProvider$ = StreamProvider.autoDispose<List<Team>>((ref) async* {
-  final user = (await ref.watch(userProvider$.future)).value;
-  yield* ref.read(teamsServiceProvider).getTeamsWithUserIn$(user);
+final userTeamsProvider$ = StreamProvider.autoDispose<List<Team>>((ref) {
+  final user = ref.watch(authStateProvider.select((value) => value.user))!;
+  return ref.read(teamsServiceProvider).getWhere$(containsUser: user);
 });
 
 class _MainView extends ConsumerWidget {

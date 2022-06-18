@@ -1,9 +1,8 @@
 import 'dart:io';
 
-import 'package:noctur/common/database/base_repository.dart';
-import 'package:noctur/common/database/query_helpers.dart';
-import 'package:noctur/common/exceptions/others.dart';
-import 'package:noctur/common/storage/storage_service.dart';
+import 'package:noctur/common/database.dart';
+import 'package:noctur/common/exceptions.dart';
+import 'package:noctur/common/storage.dart';
 import 'package:noctur/game/logic/game.dart';
 import 'package:noctur/team/logic/teams_service.dart';
 import 'package:path/path.dart';
@@ -57,7 +56,11 @@ class GamesService {
     }
 
     final game = Game(name: name, teamSize: parsedTeamSize, iconPath: iconPath);
-    await _repository.add(game);
+    try {
+      await _repository.add(game);
+    } on ResourceAlreadyExists {
+      throw GameAlreadyExists(game);
+    }
   }
 
   Future<void> deleteGame(Game game) async {

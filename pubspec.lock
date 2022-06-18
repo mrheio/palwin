@@ -721,6 +721,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.2"
+  widget_view:
+    dependency: "direct main"
+    description:
+      name: widget_view
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.2+1"
   win32:
     dependency: transitive
     description:

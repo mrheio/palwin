@@ -28,7 +28,7 @@ class AuthException extends CustomException {
   factory AuthException._weakPassword() {
     return const AuthException(
       name: 'weak-password',
-      message: 'Parola prea slaba',
+      message: 'Parola prea slaba: minim 8 caractere si o majuscula',
       statusCode: StatusCode.unprocessable,
     );
   }

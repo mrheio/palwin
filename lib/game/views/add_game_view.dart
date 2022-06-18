@@ -1,35 +1,70 @@
 import 'dart:io';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:input_validator/input_validator.dart';
 import 'package:noctur/common/styles/app_spacing.dart';
+import 'package:noctur/common/utils.dart';
 import 'package:noctur/common/widgets/loading.dart';
-import 'package:noctur/game/views/add_game_view/add_game_state.dart';
 import 'package:styles/styles.dart';
 
-class AddGameView extends ConsumerWidget {
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final ImagePicker _imagePicker = ImagePicker();
+import '../providers.dart';
 
-  AddGameView({Key? key}) : super(key: key);
+class AddGameView extends ConsumerStatefulWidget {
+  const AddGameView({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final state = ref.watch(addGameStateProvider);
-    final notifier = ref.read(addGameStateProvider.notifier);
-    ref.watch(addGameEffectProvider(context));
+  ConsumerState<ConsumerStatefulWidget> createState() {
+    return _AddGameState();
+  }
+}
 
-    Future<void> pickImage() async {
-      final res = await _imagePicker.pickImage(source: ImageSource.gallery);
-      notifier.setIcon(res);
+class _AddGameState extends ConsumerState<AddGameView> {
+  final ImagePicker _imagePicker = ImagePicker();
+  final formKey = GlobalKey<FormState>();
+  final nameController = TextEditingController();
+  final teamSizeController = TextEditingController();
+  File? icon;
+
+  @override
+  void dispose() {
+    nameController.dispose();
+    teamSizeController.dispose();
+    super.dispose();
+  }
+
+  Future<void> pickImage() async {
+    final imageRes = await _imagePicker.pickImage(source: ImageSource.gallery);
+    if (imageRes != null) {
+      setState(() {
+        icon = File(imageRes.path);
+      });
     }
+  }
 
-    if (state.loading) {
+  void removeIcon() {
+    setState(() {
+      icon = null;
+    });
+  }
+
+  Future<void> addGame() async {
+    if (formKey.currentState!.validate()) {
+      await ref.read(gamesStateProvider.notifier).addGame(
+          name: getText(nameController),
+          teamSize: getText(teamSizeController),
+          icon: icon);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final status =
+        ref.watch(gamesStateProvider.select((value) => value.status));
+
+    if (status is LoadingStatus) {
       return const Loading();
     }
 
@@ -38,19 +73,19 @@ class AddGameView extends ConsumerWidget {
       alignment: Alignment.center,
       child: SingleChildScrollView(
         child: Form(
-          key: _formKey,
+          key: formKey,
           child: StyledColumn(
             gap: AppSpacing.m,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               StyledTextField(
                 label: 'Nume joc',
-                controller: state.nameController,
+                controller: nameController,
                 validator: const InputValidator().notEmpty().create(),
               ),
               StyledTextField(
                 label: 'Capacitate maxima echipa',
-                controller: state.teamSizeController,
+                controller: teamSizeController,
                 keyboardType: TextInputType.number,
                 inputFormatters: [
                   FilteringTextInputFormatter.digitsOnly,
@@ -67,14 +102,14 @@ class AddGameView extends ConsumerWidget {
                     outlined: true,
                     child: const Icon(Icons.image_search_rounded),
                   ),
-                  if (state.icon != null) ...[
+                  if (icon != null) ...[
                     Image.file(
-                      File(state.icon!.path),
+                      File(icon!.path),
                       width: 56,
                       height: 56,
                     ),
                     StyledButtonCircle(
-                      onPressed: notifier.removeIcon,
+                      onPressed: removeIcon,
                       outlined: true,
                       child: const Icon(Icons.cancel_outlined),
                     ),
@@ -82,11 +117,7 @@ class AddGameView extends ConsumerWidget {
                 ],
               ),
               StyledButtonFluid(
-                onPressed: () {
-                  if (_formKey.currentState!.validate()) {
-                    notifier.addGame();
-                  }
-                },
+                onPressed: addGame,
                 child: const StyledText('Adauga joc'),
               )
             ],

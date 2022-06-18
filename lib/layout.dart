@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:noctur/acccount/providers.dart';
+import 'package:go_router/go_router.dart';
 import 'package:noctur/navigation_listener.dart';
-import 'package:optional/optional.dart';
+import 'package:noctur/routing/routes.dart';
 
+import 'acccount/providers.dart';
 import 'navbar.dart';
 
 class Layout extends ConsumerStatefulWidget {
@@ -26,13 +27,18 @@ class Layout extends ConsumerStatefulWidget {
 class _LayoutState extends ConsumerState<Layout> {
   @override
   Widget build(BuildContext context) {
-    final user = ref.watch(userProvider$).value ?? const Optional.empty();
+    final authState = ref.watch(authStateProvider);
     ref.watch(navigationListener(context));
+
+    if (GoRouter.of(context).location == accountRoute.path) {
+      ref.watch(accountEffectProvider(context));
+    }
 
     return Scaffold(
       body: widget.body,
-      bottomNavigationBar:
-          user.isPresent ? Navbar(selectedIndex: widget.selectedIndex) : null,
+      bottomNavigationBar: authState.hasUser
+          ? Navbar(selectedIndex: widget.selectedIndex)
+          : null,
     );
   }
 }

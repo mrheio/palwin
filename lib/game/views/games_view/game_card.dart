@@ -1,13 +1,12 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:noctur/common/styles/app_font_size.dart';
 import 'package:noctur/common/styles/app_spacing.dart';
 import 'package:noctur/common/widgets/widgets.dart';
 import 'package:noctur/game/logic/game.dart';
-import 'package:noctur/game/providers.dart';
 import 'package:styles/styles.dart';
+
+import '../../providers.dart';
 
 class GameCard extends ConsumerWidget {
   final Game game;
@@ -16,14 +15,30 @@ class GameCard extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    Future<void> deleteGame(DismissDirection direction) async {
-      await ref.read(gamesServiceProvider).deleteGame(game);
-    }
-
-    return Dismissible(
+    return GestureDetector(
       key: Key(game.id),
-      onDismissed: deleteGame,
+      onLongPress: () => showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text(game.name),
+          content: const Text('Stergi jocul?'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('NU'),
+            ),
+            TextButton(
+              onPressed: () {
+                ref.read(gamesStateProvider.notifier).deleteGame(game);
+                Navigator.of(context).pop();
+              },
+              child: const Text('DA'),
+            ),
+          ],
+        ),
+      ),
       child: AppCard(
+        onTap: () {},
         child: StyledRow(
           gap: AppSpacing.l,
           crossAxisAlignment: CrossAxisAlignment.center,

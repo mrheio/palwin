@@ -33,6 +33,7 @@ dependencies:
   optional: ^6.1.0+1
   super_rich_text: ^1.0.0
   flutter_portal: ^1.1.0
+  widget_view: ^0.1.2+1
 
 dev_dependencies:
   flutter_test:

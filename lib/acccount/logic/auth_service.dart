@@ -1,20 +1,19 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:noctur/common/database/base_repository.dart';
-import 'package:noctur/common/exceptions/auth_exception.dart';
+import 'package:noctur/common/exceptions.dart';
 import 'package:noctur/user/logic/logic.dart';
 import 'package:optional/optional.dart';
 import 'package:rxdart/rxdart.dart';
 
 class AuthService {
   final FirebaseAuth _auth;
-  final BaseRepository<ComplexUser> _usersRepository;
+  final UsersService _usersService;
 
-  const AuthService(this._auth, this._usersRepository);
+  const AuthService(this._auth, this._usersService);
 
   Future<Optional<ComplexUser>> getUser() async {
     final fbUser = _auth.currentUser;
     if (fbUser != null) {
-      return _usersRepository.getById(fbUser.uid);
+      return _usersService.getById(fbUser.uid);
     }
     return const Optional.empty();
   }
@@ -22,7 +21,8 @@ class AuthService {
   Stream<Optional<ComplexUser>> getUser$() {
     return _auth.authStateChanges().switchMap((user) async* {
       if (user != null) {
-        yield* _usersRepository.getById$(user.uid);
+        yield* _usersService.getById$(user.uid);
+        return;
       }
       yield const Optional.empty();
     });
@@ -49,7 +49,7 @@ class AuthService {
           email: email, password: password);
       final user =
           ComplexUser(id: res.user!.uid, email: email, username: username);
-      await _usersRepository.add(user);
+      await _usersService.add(user);
     } on FirebaseAuthException catch (error) {
       throw AuthException.fromFirebase(error);
     }

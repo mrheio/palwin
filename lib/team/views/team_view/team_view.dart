@@ -34,7 +34,7 @@ class TeamView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(teamProvider$(id));
-    final user = ref.watch(userProvider$).value!.value;
+    final user = ref.watch(authStateProvider.select((value) => value.user))!;
     ref.watch(teamStateEffectProvider(context)(id));
 
     return state.maybeWhen(

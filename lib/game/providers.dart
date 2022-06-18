@@ -1,9 +1,12 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:noctur/common/providers.dart';
 import 'package:noctur/common/utils/pages_controller.dart';
 import 'package:noctur/game/logic/games_service.dart';
 import 'package:noctur/game/logic/logic.dart';
 import 'package:noctur/team/providers.dart';
+
+import '../common/utils.dart';
 
 final gamesRepositoryProvider = Provider((ref) {
   return ref.read(firestoreRepositoryFactoryProvider).getRepository<Game>();
@@ -16,12 +19,29 @@ final gamesServiceProvider = Provider((ref) {
   return GamesService(repository, teamsService, storage);
 });
 
-final gamesProvider$ = StreamProvider.autoDispose((ref) {
-  ref.maintainState = true;
-  return ref.read(gamesServiceProvider).getAllWithIcons$();
-});
-
 final gamesPagesProvider = createPagesStateProvider();
 
 final gameSearchProvider = StateProvider.autoDispose((ref) => '');
 final searchingProvider = StateProvider.autoDispose((ref) => false);
+
+final gamesStateProvider =
+    StateNotifierProvider.autoDispose<GamesNotifier, GamesState>((ref) {
+  final gamesService = ref.read(gamesServiceProvider);
+  return GamesNotifier(gamesService)..getGames();
+});
+
+final gamesEffectProvider =
+    Provider.family.autoDispose((ref, BuildContext context) {
+  ref.listen<GamesState>(gamesStateProvider, (previous, next) {
+    final status = next.status;
+    if (status is FailStatus) {
+      StyledSnackbar.fromException(status.error).show(context);
+    }
+    if (status is AddGameSuccess) {
+      ref.read(gamesPagesProvider).toInitPage();
+    }
+    if (status is DeleteGameSuccess) {
+      StyledSnackbar.fromSuccess(status.success).show(context);
+    }
+  });
+});

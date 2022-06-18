@@ -43,8 +43,8 @@ final routerProvider = Provider((ref) {
     },
     routes: [
       homeRoute,
-      teamsViewRoute,
-      gamesViewRoute,
+      teamsRoute,
+      gamesRoute,
       accountRoute,
     ],
   );

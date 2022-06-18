@@ -36,3 +36,12 @@ class NetworkTimeout extends CustomException {
             message: 'A aparut o problema la conectate',
             statusCode: StatusCode.badRequest);
 }
+
+class UsernameAlreadyUsed extends CustomException {
+  const UsernameAlreadyUsed()
+      : super(
+          name: 'username-already-used',
+          message: 'Username-ul este deja folosit',
+          statusCode: StatusCode.badRequest,
+        );
+}

@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:noctur/common/database/serializable.dart';
+import 'package:noctur/common/database.dart';
 import 'package:noctur/user/logic/logic.dart';
 
 class Message extends Serializable<Message> {

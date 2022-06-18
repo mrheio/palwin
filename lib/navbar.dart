@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:noctur/routing/routes.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 
 import 'common/styles/app_color.dart';
@@ -21,16 +22,16 @@ class Navbar extends StatefulWidget {
 class _NavbarState extends State<Navbar> {
   void _handleTap(int index) {
     if (index == 0) {
-      GoRouter.of(context).go('/');
+      GoRouter.of(context).push(homeRoute.path);
     }
     if (index == 1) {
-      GoRouter.of(context).go('/teams');
+      GoRouter.of(context).push(teamsRoute.path);
     }
     if (index == 2) {
-      GoRouter.of(context).go('/games');
+      GoRouter.of(context).push(gamesRoute.path);
     }
     if (index == 3) {
-      GoRouter.of(context).go('/account');
+      GoRouter.of(context).push(accountRoute.path);
     }
   }
 

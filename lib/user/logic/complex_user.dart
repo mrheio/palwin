@@ -1,62 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:noctur/team/logic/logic.dart';
 
-import '../../common/database/serializable.dart';
-
-class SimpleUser extends Serializable<SimpleUser> {
-  final String username;
-
-  SimpleUser({
-    required String id,
-    required this.username,
-    DateTime? createdAt,
-  }) : super(id: id, createdAt: createdAt);
-
-  factory SimpleUser.fromJson(Map<String, dynamic> json) {
-    return SimpleUser(
-      id: json['id'] as String,
-      username: json['username'] as String,
-      createdAt: DateTime.fromMillisecondsSinceEpoch(json['createdAt']),
-    );
-  }
-
-  factory SimpleUser.fromDocument(DocumentSnapshot<Map<String, dynamic>> doc) {
-    final data = doc.data()!;
-    return SimpleUser.fromJson(data);
-  }
-
-  @override
-  List<Object?> get props => [id];
-
-  @override
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'username': username,
-      'createdAt': createdAt.millisecondsSinceEpoch,
-    };
-  }
-
-  @override
-  SimpleUser copyWith({String? id, String? username, DateTime? createdAt}) {
-    return SimpleUser(
-      id: id ?? this.id,
-      username: username ?? this.username,
-      createdAt: createdAt ?? this.createdAt,
-    );
-  }
-
-  SimpleUser toUser() =>
-      SimpleUser(id: id, username: username, createdAt: createdAt);
-
-  bool isInTeam(Team team) => team.users.any((element) => element.id == id);
-  bool ownsTeam(Team team) => team.uid == id;
-}
+import 'friend.dart';
+import 'simple_user.dart';
 
 class ComplexUser extends SimpleUser {
   final String email;
   final Map<String, bool> roles;
-  final List<SimpleUser> friends;
+  final List<Friend> friends;
 
   ComplexUser({
     required String id,
@@ -99,7 +49,7 @@ class ComplexUser extends SimpleUser {
     String? username,
     String? email,
     Map<String, bool>? roles,
-    List<SimpleUser>? friends,
+    List<Friend>? friends,
     DateTime? createdAt,
   }) {
     return ComplexUser(
@@ -113,4 +63,9 @@ class ComplexUser extends SimpleUser {
   }
 
   bool get isAdmin => roles['admin'] ?? false;
+  bool isFriendWith(SimpleUser user) =>
+      friends.any((element) => element.id == user.id);
+
+  @override
+  List<Object?> get props => [id, username, email, roles, friends, createdAt];
 }

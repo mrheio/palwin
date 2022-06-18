@@ -2,9 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:noctur/acccount/providers.dart';
 import 'package:noctur/common/styles/app_font_size.dart';
 import 'package:noctur/common/styles/app_spacing.dart';
-import 'package:noctur/common/widgets/loading.dart';
+import 'package:noctur/common/utils/ui_utils.dart';
 import 'package:noctur/team/logic/logic.dart';
 import 'package:noctur/team/logic/message.dart';
 import 'package:noctur/team/providers.dart';
@@ -17,34 +18,32 @@ class ChatView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final state = ref.watch(teamMessagesProvider$(team.id));
+    final messages =
+        ref.watch(teamProvider$(team.id)).value?.value.messages ?? [];
 
-    return state.maybeWhen(
-      orElse: () => const Loading(),
-      data: (data) => StyledColumn(
-        children: [
-          Expanded(
-            child: StyledList<Message>(
-              gap: AppSpacing.m,
-              padding: const EdgeInsets.all(AppSpacing.m),
-              reverse: true,
-              items: data,
-              displayBuilder: (message) => StyledColumn(
-                gap: AppSpacing.xs,
-                children: [
-                  StyledText(
-                    message.user.username,
-                    size: AppFontSize.h5,
-                    semibold: true,
-                  ),
-                  StyledText(message.text)
-                ],
-              ),
+    return StyledColumn(
+      children: [
+        Expanded(
+          child: StyledList<Message>(
+            gap: AppSpacing.m,
+            padding: const EdgeInsets.all(AppSpacing.m),
+            reverse: true,
+            items: messages,
+            displayBuilder: (message) => StyledColumn(
+              gap: AppSpacing.xs,
+              children: [
+                StyledText(
+                  message.user.username,
+                  size: AppFontSize.h5,
+                  semibold: true,
+                ),
+                StyledText(message.text)
+              ],
             ),
           ),
-          _MessageInput(team),
-        ],
-      ),
+        ),
+        _MessageInput(team),
+      ],
     );
   }
 }
@@ -91,9 +90,9 @@ class _MessageInputState extends ConsumerState<_MessageInput> {
   }
 
   Future<void> sendMessage() async {
-    await ref
-        .read(teamsServiceProvider)
-        .sendMessage(widget.team, messageController.text.trim());
+    final user = ref.read(authStateProvider).user!;
+    final message = Message(text: getText(messageController), user: user);
+    await ref.read(teamsServiceProvider).addMessage(message, widget.team);
     messageController.clear();
   }
 

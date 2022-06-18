@@ -5,17 +5,6 @@ import 'package:noctur/team/logic/logic.dart';
 import 'package:noctur/team/logic/message.dart';
 import 'package:noctur/user/logic/logic.dart';
 
-final _docDeserializers = {
-  SimpleUser: (DocumentSnapshot<Map<String, dynamic>> doc) =>
-      SimpleUser.fromDocument(doc),
-  ComplexUser: (DocumentSnapshot<Map<String, dynamic>> doc) =>
-      ComplexUser.fromDocument(doc),
-  Team: (DocumentSnapshot<Map<String, dynamic>> doc) => Team.fromDocument(doc),
-  Game: (DocumentSnapshot<Map<String, dynamic>> doc) => Game.fromDocument(doc),
-  Message: (DocumentSnapshot<Map<String, dynamic>> doc) =>
-      Message.fromDocument(doc),
-};
-
 abstract class Serializable<T> extends Equatable {
   final String id;
   final DateTime createdAt;
@@ -28,11 +17,24 @@ abstract class Serializable<T> extends Equatable {
   T copyWith({String? id, DateTime? createdAt});
 
   @override
-  List<Object?> get props => [id];
+  List<Object?> get props => [id, createdAt];
 
   static G deserialize<G extends Serializable>(dynamic payload) {
     if (payload is DocumentSnapshot<Map<String, dynamic>>) {
-      return _docDeserializers[G]!(payload) as G;
+      switch (G) {
+        case SimpleUser:
+          return SimpleUser.fromDocument(payload) as G;
+        case ComplexUser:
+          return ComplexUser.fromDocument(payload) as G;
+        case Friend:
+          return Friend.fromDocument(payload) as G;
+        case Game:
+          return Game.fromDocument(payload) as G;
+        case Team:
+          return Team.fromDocument(payload) as G;
+        case Message:
+          return Message.fromDocument(payload) as G;
+      }
     }
     throw UnimplementedError();
   }

@@ -22,7 +22,7 @@ class PagesState {
 }
 
 AutoDisposeProvider<PagesState> createPagesStateProvider() =>
-    Provider.autoDispose<PagesState>((ref) {
+    Provider.autoDispose((ref) {
       final state = PagesState();
       ref.onDispose(() {
         state.dispose();

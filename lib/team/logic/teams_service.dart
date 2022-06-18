@@ -1,23 +1,21 @@
-import 'package:noctur/acccount/logic/auth_service.dart';
-import 'package:noctur/common/database/base_repository.dart';
-import 'package:noctur/common/database/query_helpers.dart';
-import 'package:noctur/common/exceptions/others.dart';
-import 'package:noctur/common/exceptions/resource_already_exists.dart';
+import 'package:noctur/common/database.dart';
+import 'package:noctur/common/exceptions.dart';
 import 'package:noctur/game/logic/game.dart';
+import 'package:noctur/team/logic/logic.dart';
 import 'package:noctur/team/logic/message.dart';
 import 'package:noctur/team/logic/team.dart';
-import 'package:noctur/user/logic/user.dart';
+import 'package:noctur/user/logic/logic.dart';
+import 'package:noctur/user/logic/simple_user.dart';
 import 'package:optional/optional.dart';
 import 'package:rxdart/rxdart.dart';
 
 class TeamsService {
   final BaseRepository<Team> _repository;
-  final BaseRepository<SimpleUser> Function(String) _teamUsersRepository;
+  final BaseRepository<TeamMember> Function(String) _teamUsersRepository;
   final BaseRepository<Message> Function(String) _teamMessagesRepository;
-  final AuthService _authService;
 
   TeamsService(this._repository, this._teamUsersRepository,
-      this._teamMessagesRepository, this._authService);
+      this._teamMessagesRepository);
 
   Future<List<Team>> getAll() async {
     final teamsRes = await _repository.getAll();
@@ -44,7 +42,13 @@ class TeamsService {
       }
       final team = maybeTeam.value;
       final users$ = _teamUsersRepository(team.id).getAll$();
-      yield* users$.map((users) => Optional.of(team.copyWith(users: users)));
+      final messages$ = _teamMessagesRepository(team.id).getAll$();
+      yield* CombineLatestStream.combine2(
+        users$,
+        messages$,
+        (List<TeamMember> a, List<Message> b) =>
+            Optional.of(team.copyWith(users: a, messages: b)),
+      );
     });
   }
 
@@ -60,10 +64,25 @@ class TeamsService {
     return res;
   }
 
-  Stream<List<Team>> getTeamsWithUserIn$(SimpleUser user) {
-    return getAll$().map((event) => event
-        .where((element) => element.users.any((e) => e.id == user.id))
-        .toList());
+  Stream<List<Team>> getWhere$({
+    Game? game,
+    bool freeSlots = false,
+    SimpleUser? containsUser,
+  }) {
+    var queryFilter = QueryFilter();
+    if (game != null) {
+      queryFilter = queryFilter.equalsTo(key: 'gameId', value: game.id);
+    }
+    if (freeSlots) {
+      queryFilter = queryFilter.isGreaterThan(key: 'freeSlots', value: 0);
+    }
+    final res = _repository.getWhere$(queryFilter);
+    if (containsUser != null) {
+      return res.map((event) => event
+        ..where((element) =>
+            element.users.any((element) => element.id == containsUser.id)));
+    }
+    return res;
   }
 
   Future<void> addFromForm({
@@ -71,6 +90,7 @@ class TeamsService {
     required String slots,
     required String description,
     required Game game,
+    required SimpleUser user,
   }) async {
     final parsedSlots = int.parse(slots);
 
@@ -82,7 +102,6 @@ class TeamsService {
       throw GameTeamSizeOverflow(game);
     }
 
-    final user = (await _authService.getUser()).value;
     final team = Team(
       name: name,
       gameId: game.id,
@@ -95,7 +114,7 @@ class TeamsService {
 
     try {
       await _repository.add(team);
-      await _teamUsersRepository(team.id).add(user.toUser());
+      await _teamUsersRepository(team.id).add(TeamMember.fromSimpleUser(user));
     } on ResourceAlreadyExists {
       throw TeamAlreadyExists(team);
     }
@@ -113,12 +132,14 @@ class TeamsService {
     }
 
     if (addUser != null) {
-      await _teamUsersRepository(team.id).add(addUser.toUser());
+      await _teamUsersRepository(team.id)
+          .add(TeamMember.fromSimpleUser(addUser));
     }
 
     if (updateUsers) {
       for (final user in team.users) {
-        await _teamUsersRepository(team.id).update(user.toUser());
+        await _teamUsersRepository(team.id)
+            .update(TeamMember.fromSimpleUser(user));
         final userMessagesQuery =
             QueryFilter().equalsTo(key: 'user.id', value: user.id);
         final messagesRes =
@@ -133,13 +154,11 @@ class TeamsService {
     await _repository.update(team);
   }
 
-  Future<void> joinTeam(Team team) async {
-    final user = (await _authService.getUser()).value;
+  Future<void> addMember(TeamMember user, Team team) async {
     await updateTeam(team.addUser(user), addUser: user);
   }
 
-  Future<void> quitTeam(Team team) async {
-    final user = (await _authService.getUser()).value;
+  Future<void> deleteMember(TeamMember user, Team team) async {
     await updateTeam(team.removeUser(user), removeUser: user);
   }
 
@@ -156,12 +175,7 @@ class TeamsService {
     }
   }
 
-  Future<void> sendMessage(Team team, String text) async {
-    final user = (await _authService.getUser()).value;
-    final message = Message(
-      text: text,
-      user: user.toUser(),
-    );
+  Future<void> addMessage(Message message, Team team) async {
     await _teamMessagesRepository(team.id).add(message);
   }
 }

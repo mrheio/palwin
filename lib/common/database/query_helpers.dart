@@ -26,7 +26,8 @@ enum WhereRule {
   whereIn,
   whereNotIn,
   isGreaterThan,
-  isLessThan
+  isLessThan,
+  hasInSubcollection,
 }
 
 class WhereCondition extends QueryCondition {

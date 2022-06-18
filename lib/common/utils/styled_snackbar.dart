@@ -5,10 +5,10 @@ import '../exceptions/custom_exception.dart';
 import '../styles/app_color.dart';
 import '../success.dart';
 
-class AppSnackbar {
+class StyledSnackbar {
   final SnackBar _snackBar;
 
-  AppSnackbar._(
+  StyledSnackbar._(
     String message, {
     Color textColor = AppColor.text,
     Color bgColor = AppColor.info,
@@ -21,50 +21,40 @@ class AppSnackbar {
           behavior: SnackBarBehavior.floating,
         );
 
-  factory AppSnackbar.success(String message) {
-    return AppSnackbar._(
+  factory StyledSnackbar.success(String message) {
+    return StyledSnackbar._(
       message,
       textColor: AppColor.textInverted,
       bgColor: AppColor.success,
     );
   }
 
-  factory AppSnackbar.fromSuccess(Success success) {
-    return AppSnackbar.success(success.message);
+  factory StyledSnackbar.fromSuccess(Success success) {
+    return StyledSnackbar.success(success.message);
   }
 
-  factory AppSnackbar.error(String message) {
-    return AppSnackbar._(
+  factory StyledSnackbar.error(String message) {
+    return StyledSnackbar._(
       message,
       textColor: AppColor.text,
       bgColor: AppColor.error,
     );
   }
 
-  factory AppSnackbar.fromErr(CustomException error) {
-    return AppSnackbar.error(error.message);
+  factory StyledSnackbar.fromException(CustomException error) {
+    return StyledSnackbar.error(error.message);
   }
 
-  factory AppSnackbar.errorFromObject(Object error) {
-    if (error is CustomException) {
-      return AppSnackbar.fromErr(error);
-    }
-    if (error is String) {
-      return AppSnackbar.error(error);
-    }
-    throw UnimplementedError();
-  }
-
-  factory AppSnackbar.warning(String message) {
-    return AppSnackbar._(
+  factory StyledSnackbar.warning(String message) {
+    return StyledSnackbar._(
       message,
       textColor: AppColor.textInverted,
       bgColor: AppColor.warning,
     );
   }
 
-  factory AppSnackbar.info(String message) {
-    return AppSnackbar._(message);
+  factory StyledSnackbar.info(String message) {
+    return StyledSnackbar._(message);
   }
 
   void show(BuildContext context) {
