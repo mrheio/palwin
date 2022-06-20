@@ -42,7 +42,8 @@ class TeamsService {
       }
       final team = maybeTeam.value;
       final users$ = _teamUsersRepository(team.id).getAll$();
-      final messages$ = _teamMessagesRepository(team.id).getAll$();
+      final messages$ = _teamMessagesRepository(team.id)
+          .getWhere$(QueryFilter().orderDesc('createdAt'));
       yield* CombineLatestStream.combine2(
         users$,
         messages$,
